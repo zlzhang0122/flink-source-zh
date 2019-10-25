@@ -83,7 +83,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="example.html">This is a Title</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">任务提交</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#subject-subtitle">Subject Subtitle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">任务提交源码解析</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#inline-markup">Inline Markup</a></li>
 </ul>
 </li>
@@ -154,9 +154,24 @@
   <div class="section" id="id1">
 <h1>任务提交<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
 <p>Flink任务在被提交到Yarn上后会经过如下流程,具体如下:</p>
-<img alt="_images/flink-submit-to-yarn.png" src="_images/flink-submit-to-yarn.png" />
-<div class="section" id="subject-subtitle">
-<h2>Subject Subtitle<a class="headerlink" href="#subject-subtitle" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><img alt="_images/flink-submit-to-yarn.png" src="_images/flink-submit-to-yarn.png" />
+<ol class="arabic simple">
+<li><p>Client从客户端代码生成的StreamGraph提取出JobGraph;</p></li>
+<li><p>上传JobGraph和对应的jar包;</p></li>
+<li><p>启动App Master;</p></li>
+<li><p>启动JobManager;</p></li>
+<li><p>启动ResourceManager;</p></li>
+<li><p>JobManager向ResourceManager申请slots;</p></li>
+<li><p>ResourceManager向Yarn ResourceManager申请Container;</p></li>
+<li><p>启动申请到的Container;</p></li>
+<li><p>启动的Container作为TaskManager向ResourceManager注册;</p></li>
+<li><p>ResourceManger向TaskManager请求slot;</p></li>
+<li><p>TaskManager提供slot给JobManager,让其分配任务执行.</p></li>
+</ol>
+</div></blockquote>
+<div class="section" id="id2">
+<h2>任务提交源码解析<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>Subtitles are set with ‘-‘ and are required to have the same length
 of the subtitle itself, just like titles.</p>
 <p>Lists can be unnumbered like:</p>

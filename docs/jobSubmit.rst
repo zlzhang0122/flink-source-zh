@@ -1,8 +1,8 @@
-任务提交源码解析
+任务提交
 ===============
 Flink任务在被提交到Yarn上后会经过如下流程,具体如下:
 
-.. image:: image/flink-submit-to-yarn.png
+ .. image:: image/flink-submit-to-yarn.png
 
  #. Client从客户端代码生成的StreamGraph提取出JobGraph;
  #. 上传JobGraph和对应的jar包;
@@ -16,7 +16,7 @@ Flink任务在被提交到Yarn上后会经过如下流程,具体如下:
  #. ResourceManger向TaskManager请求slot;
  #. TaskManager提供slot给JobManager,让其分配任务执行.
 
-Subject Subtitle
+任务提交源码解析
 ----------------
 Subtitles are set with '-' and are required to have the same length
 of the subtitle itself, just like titles.
