@@ -31,11 +31,17 @@ StreamGraph生成的主要流程如下:
  * StreamGraphGenerator.generate()方法会最终生成一个完整的StreamGraph
 
  其中,addSink的大致流程为:生成Operator -> 生成Transformation -> 加入Transformations中.具体操作如下:
+
  #. 对用户函数进行序列化,并转化成Operator
  #. clean进行闭包操作,如使用了哪些外部变量,会对所有字段进行遍历,并将它们的引用存储在闭包中
  #. 完成Operator到SinkTransformation的转换,由DataStream和Operator共同构建一个SinkTransformation
  #. 将SinkTransformation加入到transformations中
 
+其实Transformation包含许多种类型,除了上面的SinkTransformation,还有SourceTransformation,OneInputTransformation,TwoInputTransformaion,
+PartitionTransformaion,SelectTransformation等等.具体的使用场景如下:
+ * PartitionTransformation:如果用户想要对DataStream进行keyby操作,得到一个KeyedStream,即需要对数据重新分区.首先,用户需要设置根据什么key进行
+   分区,即KeySelector.然后在生成KeyedStream的过程中,会得到一个PartitionTransformation.PartitionTransformation中会对这条记录通过key进行计算,
+   判断应该发往下游哪个节点,KeyGroup可以由maxParallism进行调整.
 
 Or automatically numbered:
 

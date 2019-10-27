@@ -181,6 +181,13 @@
 <li><p>如果上游Transformation还没有进行处理,会先对上游的Transformation进行处理,处理即包装成一个StreamNode,再通过Edge建立上下游StreamNode的联系.</p></li>
 <li><p>StreamGraphGenerator.generate()方法会最终生成一个完整的StreamGraph</p></li>
 </ul>
+<p>其中,addSink的大致流程为:生成Operator -&gt; 生成Transformation -&gt; 加入Transformations中.具体操作如下:</p>
+<ol class="arabic simple">
+<li><p>对用户函数进行序列化,并转化成Operator</p></li>
+<li><p>clean进行闭包操作,如使用了哪些外部变量,会对所有字段进行遍历,并将它们的引用存储在闭包中</p></li>
+<li><p>完成Operator到SinkTransformation的转换,由DataStream和Operator共同构建一个SinkTransformation</p></li>
+<li><p>将SinkTransformation加入到transformations中</p></li>
+</ol>
 </div></blockquote>
 <p>Or automatically numbered:</p>
 <blockquote>

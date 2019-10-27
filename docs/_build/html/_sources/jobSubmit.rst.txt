@@ -30,6 +30,13 @@ StreamGraph生成的主要流程如下:
  * 如果上游Transformation还没有进行处理,会先对上游的Transformation进行处理,处理即包装成一个StreamNode,再通过Edge建立上下游StreamNode的联系.
  * StreamGraphGenerator.generate()方法会最终生成一个完整的StreamGraph
 
+ 其中,addSink的大致流程为:生成Operator -> 生成Transformation -> 加入Transformations中.具体操作如下:
+
+ #. 对用户函数进行序列化,并转化成Operator
+ #. clean进行闭包操作,如使用了哪些外部变量,会对所有字段进行遍历,并将它们的引用存储在闭包中
+ #. 完成Operator到SinkTransformation的转换,由DataStream和Operator共同构建一个SinkTransformation
+ #. 将SinkTransformation加入到transformations中
+
 
 Or automatically numbered:
 
