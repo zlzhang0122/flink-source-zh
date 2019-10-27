@@ -4,6 +4,7 @@ Flink任务在被提交到Yarn上后会经过如下流程,具体如下:
 
  .. image:: image/flink-submit-to-yarn.png
 
+
  #. Client从客户端代码生成的StreamGraph提取出JobGraph;
  #. 上传JobGraph和对应的jar包;
  #. 启动App Master;
