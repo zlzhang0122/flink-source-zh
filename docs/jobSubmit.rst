@@ -37,10 +37,11 @@ StreamGraph生成的主要流程如下:
  #. 完成Operator到SinkTransformation的转换,由DataStream和Operator共同构建一个SinkTransformation
  #. 将SinkTransformation加入到transformations中
 
-其实Transformation包含许多种类型,除了上面的SinkTransformation,还有SourceTransformation,OneInputTransformation,TwoInputTransformaion,
-PartitionTransformaion,SelectTransformation等等.具体的使用场景如下:
+其实Transformation包含许多种类型,除了上面的SinkTransformation,还有SourceTransformation,OneInputTransformation,TwoInputTransformaion,PartitionTransformaion,
+SelectTransformation等等.具体的使用场景如下:
+
  * PartitionTransformation:如果用户想要对DataStream进行keyby操作,得到一个KeyedStream,即需要对数据重新分区.首先,用户需要设置根据什么key进行
-   分区,即KeySelector.然后在生成KeyedStream的过程中,会得到一个PartitionTransformation.PartitionTransformation中会对这条记录通过key进行计算,
+   分区,即KeySelector.然后在生成KeyedStream的过程中,会得到一个PartitionTransformation.在PartitionTransformation中会对这条记录通过key进行计算,
    判断应该发往下游哪个节点,KeyGroup可以由maxParallism进行调整.
 
 Or automatically numbered:
