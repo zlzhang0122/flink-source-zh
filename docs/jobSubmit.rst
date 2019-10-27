@@ -43,6 +43,11 @@ SelectTransformation等等.具体的使用场景如下:
  * PartitionTransformation:如果用户想要对DataStream进行keyby操作,得到一个KeyedStream,即需要对数据重新分区.首先,用户需要设置根据什么key进行
    分区,即KeySelector.然后在生成KeyedStream的过程中,会得到一个PartitionTransformation.在PartitionTransformation中会对这条记录通过key进行计算,
    判断应该发往下游哪个节点,KeyGroup可以由maxParallism进行调整.
+ * TwoInputTransformaion:指包含两个输入流,如inputStream1和inputStream2,加上这个Transformation的输出,及Operator即可得到一个完整的TwoInputTransformation.
+
+以上过程得到了transformations的List,接下来就可以通过StreamGraphGenerator生成完整的StreamGraph.
+生成StreamGraph时会遍历Transformation树,逐个对Transformation进行转化,具体的转化由transform()方法完成.transform最终都会调用transformXXX对
+具体的StreamTransformation进行转换.transformPartition则是创建VirtualNode而不是StreamNode.
 
 Or automatically numbered:
 

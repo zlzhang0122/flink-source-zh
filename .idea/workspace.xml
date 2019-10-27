@@ -2,12 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3698c706-6cbf-4c64-963f-9b5199f831dd" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/_build/doctrees/environment.pickle" afterPath="$PROJECT_DIR$/docs/_build/doctrees/environment.pickle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/_build/doctrees/jobSubmit.doctree" afterPath="$PROJECT_DIR$/docs/_build/doctrees/jobSubmit.doctree" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/_build/html/_sources/jobSubmit.rst.txt" afterPath="$PROJECT_DIR$/docs/_build/html/_sources/jobSubmit.rst.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/_build/html/jobSubmit.html" afterPath="$PROJECT_DIR$/docs/_build/html/jobSubmit.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/_build/html/searchindex.js" afterPath="$PROJECT_DIR$/docs/_build/html/searchindex.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/jobSubmit.rst" afterPath="$PROJECT_DIR$/docs/jobSubmit.rst" />
     </list>
     <ignored path="flink-source-zh.iws" />
@@ -43,8 +37,8 @@
       <file leaf-file-name="jobSubmit.rst" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/docs/jobSubmit.rst">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="167">
-              <caret line="43" column="70" selection-start-line="43" selection-start-column="70" selection-end-line="43" selection-end-column="70" />
+            <state relative-caret-position="295">
+              <caret line="49" column="28" selection-start-line="49" selection-start-column="28" selection-end-line="49" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -88,7 +82,8 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="23" />
+    <option name="x" value="1" />
+    <option name="y" value="292" />
     <option name="width" value="1280" />
     <option name="height" value="709" />
   </component>
@@ -679,15 +674,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1571917925283</updated>
-      <workItem from="1571917926963" duration="9274000" />
+      <workItem from="1571917926963" duration="9985000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9274000" />
+    <option name="totallyTimeSpent" value="9985000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1280" height="709" extended-state="6" />
+    <frame x="1" y="292" width="1280" height="709" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -697,7 +692,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32901135" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32901135" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24959612" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -806,8 +801,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/docs/jobSubmit.rst">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="43" column="70" selection-start-line="43" selection-start-column="70" selection-end-line="43" selection-end-column="70" />
+        <state relative-caret-position="295">
+          <caret line="49" column="28" selection-start-line="49" selection-start-column="28" selection-end-line="49" selection-end-column="28" />
           <folding />
         </state>
       </provider>
