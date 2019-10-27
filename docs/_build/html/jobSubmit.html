@@ -83,7 +83,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">任务提交</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#streamgraph">生成StreamGraph</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#inline-markup">Inline Markup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#client">Client</a></li>
 </ul>
 </li>
 </ul>
@@ -194,20 +194,17 @@ SelectTransformation等等.具体的使用场景如下:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>PartitionTransformation:如果用户想要对DataStream进行keyby操作,得到一个KeyedStream,即需要对数据重新分区.首先,用户需要设置根据什么key进行
-分区,即KeySelector.然后在生成KeyedStream的过程中,会得到一个PartitionTransformation.PartitionTransformation中会对这条记录通过key进行计算,
+分区,即KeySelector.然后在生成KeyedStream的过程中,会得到一个PartitionTransformation.在PartitionTransformation中会对这条记录通过key进行计算,
 判断应该发往下游哪个节点,KeyGroup可以由maxParallism进行调整.</p></li>
+<li><p>TwoInputTransformaion:指包含两个输入流,如inputStream1和inputStream2,加上这个Transformation的输出,及Operator即可得到一个完整的TwoInputTransformation.</p></li>
 </ul>
 </div></blockquote>
-<p>Or automatically numbered:</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p>Item 1</p></li>
-<li><p>Item 2</p></li>
-</ol>
-</div></blockquote>
+<p>以上过程得到了transformations的List,接下来就可以通过StreamGraphGenerator生成完整的StreamGraph.
+生成StreamGraph时会遍历Transformation树,逐个对Transformation进行转化,具体的转化由transform()方法完成.transform最终都会调用transformXXX对
+具体的StreamTransformation进行转换.transformPartition则是创建VirtualNode而不是StreamNode.</p>
 </div>
-<div class="section" id="inline-markup">
-<h2>Inline Markup<a class="headerlink" href="#inline-markup" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="client">
+<h2>Client<a class="headerlink" href="#client" title="Permalink to this headline">¶</a></h2>
 <p>Words can have <em>emphasis in italics</em> or be <strong>bold</strong> and you can define
 code samples with back quotes, like when you talk about a command: <code class="docutils literal notranslate"><span class="pre">sudo</span></code>
 gives you super user powers!</p>

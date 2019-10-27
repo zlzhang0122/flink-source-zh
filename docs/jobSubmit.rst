@@ -49,13 +49,10 @@ SelectTransformation等等.具体的使用场景如下:
 生成StreamGraph时会遍历Transformation树,逐个对Transformation进行转化,具体的转化由transform()方法完成.transform最终都会调用transformXXX对
 具体的StreamTransformation进行转换.transformPartition则是创建VirtualNode而不是StreamNode.
 
-Or automatically numbered:
 
- #. Item 1
- #. Item 2
-
-Inline Markup
+Client
 -------------
-Words can have *emphasis in italics* or be **bold** and you can define
-code samples with back quotes, like when you talk about a command: ``sudo``
-gives you super user powers!
+Client模块的入口为CliFrontend,用于接收和处理各种命令与请求,如Run和Cancel代表运行和取消任务,CliFrontend在收到对应命令后,根据参数来具体执行命令.
+Run命令中必须执行Jar和Class,也可指定SavePoint目录来恢复任务.
+Client会根据Jar来提取出Plan,即DataFlow.然后在此Plan的基础上生成JobGraph.其主要操作是对StreamGraph进行优化,将能chain在一起的Operator进行Chain在一起的操作.
+在得到JobGraph后就会提交JobGraph等内容,为任务的运行做准备.
