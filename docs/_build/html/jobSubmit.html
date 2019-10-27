@@ -205,9 +205,22 @@ SelectTransformation等等.具体的使用场景如下:</p>
 </div>
 <div class="section" id="client">
 <h2>Client<a class="headerlink" href="#client" title="Permalink to this headline">¶</a></h2>
-<p>Words can have <em>emphasis in italics</em> or be <strong>bold</strong> and you can define
-code samples with back quotes, like when you talk about a command: <code class="docutils literal notranslate"><span class="pre">sudo</span></code>
-gives you super user powers!</p>
+<p>Client模块的入口为CliFrontend,用于接收和处理各种命令与请求,如Run和Cancel代表运行和取消任务,CliFrontend在收到对应命令后,根据参数来具体执行命令.
+Run命令中必须执行Jar和Class,也可指定SavePoint目录来恢复任务.</p>
+<p>Client会根据Jar来提取出Plan,即DataFlow.然后在此Plan的基础上生成JobGraph.其主要操作是对StreamGraph进行优化,将能chain在一起的Operator进行Chain在一起的操作.
+在得到JobGraph后就会提交JobGraph等内容,为任务的运行做准备.
+Operator能chain在一起的条件:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>上下游Operator的并行度一致</p></li>
+<li><p>下游节点的入度为1</p></li>
+<li><p>上下游节点都在同一个SlotSharingGroup中(默认为default)</p></li>
+<li><p>下游节点的chain策略是ALWAYS(可以与上下游链接,map/flatmap/filter等默认是ALWAYS)</p></li>
+<li><p>上游节点的chain策略是ALWAYS或HEAD(只能与下游链接,不能与上游链接,source默认是HEAD)</p></li>
+<li><p>两个Operator间的数据分区方式是fowward</p></li>
+<li><p>用户没有禁用chain</p></li>
+</ol>
+</div></blockquote>
 </div>
 </div>
 
