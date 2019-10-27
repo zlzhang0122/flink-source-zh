@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="This is a Title" href="example.html" /> 
+    <link rel="prev" title="Flink源码阅读文档!" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -81,9 +81,8 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="example.html">This is a Title</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">任务提交</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id2">任务提交源码解析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#streamgraph">生成StreamGraph</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#inline-markup">Inline Markup</a></li>
 </ul>
 </li>
@@ -169,18 +168,19 @@
 <li><p>ResourceManger向TaskManager请求slot;</p></li>
 <li><p>TaskManager提供slot给JobManager,让其分配任务执行.</p></li>
 </ol>
+<p>上面的流程主要包含Client,JobManager,ResourceManager,TaskManager共四个部分.接下来就对每个部分进行详细的分析.</p>
 </div></blockquote>
-<div class="section" id="id2">
-<h2>任务提交源码解析<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<p>Subtitles are set with '-' and are required to have the same length
-of the subtitle itself, just like titles.</p>
-<p>Lists can be unnumbered like:</p>
+<div class="section" id="streamgraph">
+<h2>生成StreamGraph<a class="headerlink" href="#streamgraph" title="Permalink to this headline">¶</a></h2>
+<p>在用户编写一个Flink任务之后是怎么样一步步转换成Flink的第一层抽象StreamGraph的呢?本节将会对此进行详细的介绍.</p>
+<p>StreamGraph生成的主要流程如下:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Item Foo</p></li>
-<li><p>Item Bar</p></li>
+<li><p>用户对DataStream声明的每个操作都会将该操作对应的Transformation添加到Transformations列表:List</p></li>
+<li><p>用户程序中调用env.execute后(batch调用print方法类似),Flink将从List的Sink开始自底向上进行遍历,这也是为何Flink一定要写Sink的原因,没有Sink就无法生成StreamGraph.</p></li>
+<li><p>如果上游Transformation还没有进行处理,会先对上游的Transformation进行处理,处理即包装成一个StreamNode,再通过Edge建立上下游StreamNode的联系.</p></li>
+<li><p>StreamGraphGenerator.generate()方法会最终生成一个完整的StreamGraph</p></li>
 </ul>
-<img alt="_images/flink-submit-to-yarn.png" src="_images/flink-submit-to-yarn.png" />
 </div></blockquote>
 <p>Or automatically numbered:</p>
 <blockquote>
@@ -207,7 +207,7 @@ gives you super user powers!</p>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="example.html" class="btn btn-neutral float-left" title="This is a Title" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Flink源码阅读文档!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
