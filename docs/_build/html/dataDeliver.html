@@ -158,16 +158,16 @@
 <blockquote>
 <div><img alt="_images/shuffle.png" src="_images/shuffle.png" />
 </div></blockquote>
-<dl class="simple">
-<dt>整体实现步骤如下:</dt><dd><ul class="simple">
+<p>整体实现步骤如下:</p>
+<blockquote>
+<div><ol class="arabic simple">
 <li><p>在M1/M2处理完数据后,本地需要ResultPartition RS1/RS2来临时存储数据;</p></li>
 <li><p>通知JobManager,上游有新的数据产生;</p></li>
 <li><p>JobManager通知和调度下游节点可以消费新的数据;</p></li>
 <li><p>下游节点向上游请求数据;</p></li>
 <li><p>通过Channel在各个TaskManager之间传递数据.</p></li>
-</ul>
-</dd>
-</dl>
+</ol>
+</div></blockquote>
 <p>Lists can be unnumbered like:</p>
 <blockquote>
 <div><ul class="simple">
