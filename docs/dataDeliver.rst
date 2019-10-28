@@ -7,6 +7,7 @@
  .. image:: image/shuffle.png
 
 整体实现步骤如下:
+
  * 在M1/M2处理完数据后,本地需要ResultPartition RS1/RS2来临时存储数据;
  * 通知JobManager,上游有新的数据产生;
  * JobManager通知和调度下游节点可以消费新的数据;

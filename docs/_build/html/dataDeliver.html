@@ -83,7 +83,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="jobSubmit.html">任务提交</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">数据传递</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#subject-subtitle">Subject Subtitle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">数据传递流程</a></li>
 </ul>
 </li>
 </ul>
@@ -153,10 +153,21 @@
   <div class="section" id="id1">
 <h1>数据传递<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
 <p>本节主要介绍数据在各个节点之间是如何进行传递的,以及如何在数据传递的过程中进行自然的反压.</p>
-<div class="section" id="subject-subtitle">
-<h2>Subject Subtitle<a class="headerlink" href="#subject-subtitle" title="Permalink to this headline">¶</a></h2>
-<p>Subtitles are set with ‘-‘ and are required to have the same length
-of the subtitle itself, just like titles.</p>
+<div class="section" id="id2">
+<h2>数据传递流程<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><img alt="_images/shuffle.png" src="_images/shuffle.png" />
+</div></blockquote>
+<dl class="simple">
+<dt>整体实现步骤如下:</dt><dd><ul class="simple">
+<li><p>在M1/M2处理完数据后,本地需要ResultPartition RS1/RS2来临时存储数据;</p></li>
+<li><p>通知JobManager,上游有新的数据产生;</p></li>
+<li><p>JobManager通知和调度下游节点可以消费新的数据;</p></li>
+<li><p>下游节点向上游请求数据;</p></li>
+<li><p>通过Channel在各个TaskManager之间传递数据.</p></li>
+</ul>
+</dd>
+</dl>
 <p>Lists can be unnumbered like:</p>
 <blockquote>
 <div><ul class="simple">
