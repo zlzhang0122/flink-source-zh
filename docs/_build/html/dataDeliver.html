@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Search &mdash; flink源码阅读 v0.1 documentation</title>
+  <title>数据传递 &mdash; flink源码阅读 v0.1 documentation</title>
   
 
   
@@ -25,7 +25,6 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
-        <script type="text/javascript" src="_static/searchtools.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -35,7 +34,8 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="任务提交" href="jobSubmit.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -62,7 +62,7 @@
 
           
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="#" method="get">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -80,9 +80,12 @@
             
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="jobSubmit.html">任务提交</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dataDeliver.html">数据传递</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">数据传递</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#subject-subtitle">Subject Subtitle</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -128,12 +131,14 @@
     
       <li><a href="contents.html">Docs</a> &raquo;</li>
         
-      <li>Search</li>
+      <li>数据传递</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
+            <a href="_sources/dataDeliver.rst.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
     
@@ -145,24 +150,42 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search
-      functionality.
-    </p>
-  </div>
-  </noscript>
+  <div class="section" id="id1">
+<h1>数据传递<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>本节主要介绍数据在各个节点之间是如何进行传递的,以及如何在数据传递的过程中进行自然的反压.</p>
+<div class="section" id="subject-subtitle">
+<h2>Subject Subtitle<a class="headerlink" href="#subject-subtitle" title="Permalink to this headline">¶</a></h2>
+<p>Subtitles are set with ‘-‘ and are required to have the same length
+of the subtitle itself, just like titles.</p>
+<p>Lists can be unnumbered like:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Item Foo</p></li>
+<li><p>Item Bar</p></li>
+</ul>
+</div></blockquote>
+<p>Or automatically numbered:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Item 1</p></li>
+<li><p>Item 2</p></li>
+</ol>
+</div></blockquote>
+</div>
+</div>
 
-  
-  <div id="search-results">
-  
-  </div>
 
            </div>
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="jobSubmit.html" class="btn btn-neutral float-left" title="任务提交" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -195,14 +218,7 @@
   
   
     
-  
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
    
-
 
 </body>
 </html>
