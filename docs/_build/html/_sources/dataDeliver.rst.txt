@@ -13,6 +13,13 @@
  #. 下游节点向上游请求数据;
  #. 通过Channel在各个TaskManager之间传递数据.
 
+数据在节点之间传递的具体流程如下图:
+
+ .. image:: image/shuffle-data.png
+
+ * 数据在operator处理完成后,先交给RecordWriter,每条记录都要选择一个下游节点,所以要经过ChannelSelector;
+ * 在每个channel都有一个serializer,把这条Record序列化为ByteBuffer;
+
 Lists can be unnumbered like:
 
  * Item Foo
