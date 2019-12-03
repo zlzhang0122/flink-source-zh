@@ -1,4 +1,5 @@
-### 任务提交
+任务提交
+-------------
 
 Flink任务在被提交到Yarn上后会经过如下流程,具体如下:
 
@@ -28,8 +29,7 @@ Flink任务在被提交到Yarn上后会经过如下流程,具体如下:
 
  上面的流程主要包含Client,JobManager,ResourceManager,TaskManager共四个部分.接下来就对每个部分进行详细的分析.
 
-生成StreamGraph
--------------
+### 生成StreamGraph
 
 在用户编写一个Flink任务之后是怎么样一步步转换成Flink的第一层抽象StreamGraph的呢?本节将会对此进行详细的介绍.
 
@@ -60,8 +60,8 @@ SelectTransformation等等.具体的使用场景如下:
 具体的StreamTransformation进行转换.transformPartition则是创建VirtualNode而不是StreamNode.
 
 
-Client
--------------
+### Client
+
 Client模块的入口为CliFrontend,用于接收和处理各种命令与请求,如Run和Cancel代表运行和取消任务,CliFrontend在收到对应命令后,根据参数来具体执行命令.
 Run命令中必须执行Jar和Class,也可指定SavePoint目录来恢复任务.
 
