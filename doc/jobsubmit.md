@@ -28,7 +28,8 @@ Flink任务在被提交到Yarn上后会经过如下流程,具体如下:
 
  上面的流程主要包含Client,JobManager,ResourceManager,TaskManager共四个部分.接下来就对每个部分进行详细的分析.
 
-#生成StreamGraph
+生成StreamGraph
+-------------
 
 在用户编写一个Flink任务之后是怎么样一步步转换成Flink的第一层抽象StreamGraph的呢?本节将会对此进行详细的介绍.
 
@@ -41,10 +42,10 @@ StreamGraph生成的主要流程如下:
 
  其中,addSink的大致流程为:生成Operator -> 生成Transformation -> 加入Transformations中.具体操作如下:
 
- #. 对用户函数进行序列化,并转化成Operator
- #. clean进行闭包操作,如使用了哪些外部变量,会对所有字段进行遍历,并将它们的引用存储在闭包中
- #. 完成Operator到SinkTransformation的转换,由DataStream和Operator共同构建一个SinkTransformation
- #. 将SinkTransformation加入到transformations中
+ (1). 对用户函数进行序列化,并转化成Operator
+ (2). clean进行闭包操作,如使用了哪些外部变量,会对所有字段进行遍历,并将它们的引用存储在闭包中
+ (3). 完成Operator到SinkTransformation的转换,由DataStream和Operator共同构建一个SinkTransformation
+ (4). 将SinkTransformation加入到transformations中
 
 其实Transformation包含许多种类型,除了上面的SinkTransformation,还有SourceTransformation,OneInputTransformation,TwoInputTransformaion,PartitionTransformaion,
 SelectTransformation等等.具体的使用场景如下:
@@ -67,10 +68,17 @@ Run命令中必须执行Jar和Class,也可指定SavePoint目录来恢复任务.
 Client会根据Jar来提取出Plan,即DataFlow.然后在此Plan的基础上生成JobGraph.其主要操作是对StreamGraph进行优化,将能chain在一起的Operator进行Chain在一起的操作.
 在得到JobGraph后就会提交JobGraph等内容,为任务的运行做准备.
 Operator能chain在一起的条件:
- #. 上下游Operator的并行度一致
- #. 下游节点的入度为1
- #. 上下游节点都在同一个SlotSharingGroup中(默认为default)
- #. 下游节点的chain策略是ALWAYS(可以与上下游链接,map/flatmap/filter等默认是ALWAYS)
- #. 上游节点的chain策略是ALWAYS或HEAD(只能与下游链接,不能与上游链接,source默认是HEAD)
- #. 两个Operator间的数据分区方式是fowward
- #. 用户没有禁用chain
+
+ 1. 上下游Operator的并行度一致
+
+ 2. 下游节点的入度为1
+
+ 3. 上下游节点都在同一个SlotSharingGroup中(默认为default)
+
+ 4. 下游节点的chain策略是ALWAYS(可以与上下游链接,map/flatmap/filter等默认是ALWAYS)
+
+ 5. 上游节点的chain策略是ALWAYS或HEAD(只能与下游链接,不能与上游链接,source默认是HEAD)
+
+ 6. 两个Operator间的数据分区方式是fowward
+
+ 7. 用户没有禁用chain
