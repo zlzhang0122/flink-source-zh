@@ -16,3 +16,9 @@ StreamOperator是Stream operators的基础接口，是任务执行过程中的�
  * dataStream.addSink对应StreamSink;
  * dataStream.keyBy(...).process对应KeyedProcessOperator;
 
+StreamOperator继承的接口有：
+ * CheckpointListener接口，其中的notifyCheckpointComplete方法表示checkpoint完成后的回掉函数;
+ * KeyContext接口，用于当前key的切换，用于KeyedStream中state的key的设置;
+ * Disposable接口，dispose方法主要用于对象销毁和资源释放
+ * Serializable序列化接口
+
