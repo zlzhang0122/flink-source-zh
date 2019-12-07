@@ -5,9 +5,10 @@ StreamOperator是Stream operators的基础接口，是任务执行过程中的�
 实现类是实现OneInputStreamOperator或TwoInputStreamOperator接口中的一种，分别表示处理一个输入、两个输入的Operator，其中包含了
 processElement/processWatermark/processLatencyMarker方法，并用来创建算子处理数据。OneInputStreamOperator实现类StreamMap、
 WindowOperator、KeyedProcessOperator等单流入处理Operator，TwoInputStreamOperator实现类CoStreamMap、KeyedCoProcessOperator、
-IntervalJoinOperator等多流处理Operator。AbstractStreamOperator是StreamOperator
-的基础抽象实现类，所有的operator都必须继承该抽象类，它为生命周期和属性方法提供了默认的实现。AbstractUdfStreamOperator是继承
-AbstractStreamOperator的抽象实现类，其内部包含了userFunction，在Task的生命周期都会调用userFunction中对应的方法。
+IntervalJoinOperator等多流处理Operator。StreamSource表示的source端的operator，既没有实现OneInputStreamOperator接口也没有实现
+TwoInputStreamOperator接口，其就是流处理的源头，不需要接受输入。AbstractStreamOperator是StreamOperator的基础抽象实现类，所有的
+operator都必须继承该抽象类，它为生命周期和属性方法提供了默认的实现。AbstractUdfStreamOperator是继承AbstractStreamOperator的抽象实
+现类，其内部包含了userFunction，在Task的生命周期都会调用userFunction中对应的方法。
 
 其层级结构如下图：
 
