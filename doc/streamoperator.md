@@ -27,3 +27,5 @@ StreamOperator继承的接口有：
  * Disposable接口，dispose方法主要用于对象销毁和资源释放
  * Serializable序列化接口
 
+前面提到，AbstractStreamOperator是StreamOperator的基础抽象实现类，而AbstractUdfStreamOperator则是面向userFunction调用，接下来就
+具体分析一下。它们用于初始化或者资源的释放等操作，大部分方法都是被StreamTask触发调用，从invoke方法作为入口分析：
