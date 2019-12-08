@@ -45,15 +45,15 @@ AbstractStreamOperator和AbstractUdfStreamOperator
 
  3. run方法，如果任务正常则一直会执行这个方法，根据收到的的不同数据类型调用AbstractStreamOperator的不同方法:
 
-   (1) 如果是watermark，会调用其processWatermark方法，做一些定时触发的判断与调用;
+   * 如果是watermark，会调用其processWatermark方法，做一些定时触发的判断与调用;
 
-   (2) 如果是LatencyMarker，表示的是一个延时标记，用于统计数据从source到下游operator的耗时，会调用processLatencyMarker方法，上报Histogram
+   * 如果是LatencyMarker，表示的是一个延时标记，用于统计数据从source到下游operator的耗时，会调用processLatencyMarker方法，上报Histogram
    类型的metric，默认关闭;
 
-   (3) 如果是StreamRecord，也就是需要处理的业务数据，首先会调用setKeyContextElement方法，用于切换KeyedStream类型的statebackend的当前key，
+   * 如果是StreamRecord，也就是需要处理的业务数据，首先会调用setKeyContextElement方法，用于切换KeyedStream类型的statebackend的当前key，
    然后调用processElement具体的数据处理流程;
 
-   (4) 如果是CheckpointBarrier，表示的是需要进行checkpoint，首先会调用prepareSnapshotPreBarrier方法。在AbstractStreamOperator中是一个
+   * 如果是CheckpointBarrier，表示的是需要进行checkpoint，首先会调用prepareSnapshotPreBarrier方法。在AbstractStreamOperator中是一个
    空的实现，然后调用snapshotState方法。在AbstractUdfStreamOperator中会调用userFunction的snapshotState方法，前提是该userFunction必须
    实现CheckpointedFunction接口;
 
