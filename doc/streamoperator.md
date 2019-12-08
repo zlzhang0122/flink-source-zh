@@ -43,7 +43,7 @@ AbstractStreamOperator和AbstractUdfStreamOperator
 
  2. open初始化方法，在AbstractStreamOperator中是一个空实现，通常可以在userFunction重写open方法完成一些用户初始化工作;
 
- 3. run方法，如果任务正常则一直会执行这个方法，根据收到的的不同数据类型调用AbstractStreamOperator的不同方法:
+ 3. run方法(最新版本中是mailboxProcessor.runMailboxLoop()方法)，如果任务正常则一直会执行这个方法，根据收到的的不同数据类型调用AbstractStreamOperator的不同方法:
 
    * 如果是watermark，会调用其processWatermark方法，做一些定时触发的判断与调用;
 
