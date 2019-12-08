@@ -36,3 +36,35 @@ AbstractStreamOperator和AbstractUdfStreamOperator
 
 前面提到，AbstractStreamOperator是StreamOperator的基础抽象实现类，而AbstractUdfStreamOperator则是面向userFunction调用，接下来就
 具体分析一下。它们用于初始化或者资源的释放等操作，其中大部分方法都是被StreamTask触发调用，从invoke方法作为入口分析：
+
+ 1. initializeState状态初始化，会调用到StreamOperator的initializeState方法，初始化operatorStateBackend和keyedStateBackend状态后端，
+ 定时器恢复初始化，对于keyedState来说会自动初始化恢复，但是operatorState则需要手动初始化恢复，所以在其继承的AbstractUdfStreamOperator会
+ 调用userFunction的initializedState方法，前提条件是该userFunction必须实现CheckpointedFunction接口;
+
+ 2. open初始化方法，在AbstractStreamOperator中是一个空实现，通常可以在userFunction重写open方法完成一些用户初始化工作;
+
+ 3. run方法，如果任务正常则一直会执行这个方法，根据收到的的不同数据类型调用AbstractStreamOperator的不同方法:
+
+   (1) 如果是watermark，会调用其processWatermark方法，做一些定时触发的判断与调用;
+
+   (2) 如果是LatencyMarker，表示的是一个延时标记，用于统计数据从source到下游operator的耗时，会调用processLatencyMarker方法，上报Histogram
+   类型的metric，默认关闭;
+
+   (3) 如果是StreamRecord，也就是需要处理的业务数据，首先会调用setKeyContextElement方法，用于切换KeyedStream类型的statebackend的当前key，
+   然后调用processElement具体的数据处理流程;
+
+   (4) 如果是CheckpointBarrier，表示的是需要进行checkpoint，首先会调用prepareSnapshotPreBarrier方法。在AbstractStreamOperator中是一个
+   空的实现，然后调用snapshotState方法。在AbstractUdfStreamOperator中会调用userFunction的snapshotState方法，前提是该userFunction必须
+   实现CheckpointedFunction接口;
+
+ 4. close方法，任务正常结束调用的方法，在AbstractStreamOperator中是一个空的实现，通常可以在userFunction中重写close方法完成一些资源的
+   释放;
+
+ 5. dispose方法，任务正常结束或异常结束调用的方法，异常结束时会调用close方法，正常结束不会重复调用close方法，在其中完成一些状态最终资源的
+   释放;
+
+其它方法:
+
+ 6. setup方法，初始化做一些参数的配置;
+
+ 7. notifyCheckpointComplete方法，在checkpoint完成时调用的方法，面向用户实现的userFunction需要实现CheckpointListener接口.
