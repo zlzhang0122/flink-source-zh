@@ -4,7 +4,7 @@
 
 * [Flink源码阅读2：数据传递](../master/doc/datadeliver.md)
 
-* [Flink源码阅读3：StreamOperator](../master/doc/datadeliver.md)
+* [Flink源码阅读3：StreamOperator](../master/doc/streamoperator.md)
 
 
 
