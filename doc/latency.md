@@ -19,3 +19,6 @@ LatencyMarker不会增加作业的延迟，但是它与常规记录类似，可�
 缓解这个问题，这样TM就可以通过定期查询JM的当前时间，来确定其时钟的偏移量，这个偏移量会包含TM和JM之间的网络延迟，但是已经能较好的测量时延。
 
 ![FLink LatencyMarker](../image/latency.jpg "FLink LatencyMarker")
+
+LatencyMarker按默认的配置时间间隔从源发出，这个时间间隔默认是0毫秒，即不触发(配置项在ExecutionConfig#latencyTrackingInterval，名称
+metrics.latency.interval)，例如可以配置为2000毫秒触发一次LatencyMarker发送。
