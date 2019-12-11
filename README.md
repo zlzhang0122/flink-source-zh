@@ -10,4 +10,4 @@
 
 ### 扩展阅读
 
-* [Flink扩展阅读：全链路延迟测量](../master/docs/latency.md)
+* [Flink扩展阅读：全链路延迟测量](../master/doc/latency.md)
