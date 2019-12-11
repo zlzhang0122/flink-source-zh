@@ -22,3 +22,6 @@ LatencyMarker不会增加作业的延迟，但是它与常规记录类似，可�
 
 LatencyMarker按默认的配置时间间隔从源发出，这个时间间隔默认是0毫秒，即不触发(配置项在ExecutionConfig#latencyTrackingInterval，名称
 metrics.latency.interval)，例如可以配置为2000毫秒触发一次LatencyMarker发送。
+
+LatencyMarker不能"多于"常规元素，这确保了测量的延迟接近于常规流元素的端到端延迟，常规操作符Operator(不包括那些参与迭代的Operator)如果不是Sink，
+就会转发延迟标记LatencyMarker。
