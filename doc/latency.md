@@ -14,3 +14,7 @@ Flink Job端到端延迟是一个重要的指标，用来衡量Flink任务的整
 LatencyMarker不会增加作业的延迟，但是它与常规记录类似，可以被delay阻塞(例如出现背压时)，因此LatencyMarker的延迟与StreamRecord延迟近似，实际
 上Flink的上游算子除了会向下游算子传递StreamRecord常规记录外，还会传递WaterMark、StreamStatus、LatencyMarker等同样继承了StreamElement抽象
 类的特殊数据类型。
+
+上述建议期望所有的任务管理器TaskManager上的时钟是同步的，否则测量的延迟也包含TaskManager时钟之间的偏移，可以通过JobManager作为计时服务中心来
+缓解这个问题，这样TM就可以通过定期查询JM的当前时间，来确定其时钟的偏移量，这个偏移量会包含TM和JM之间的网络延迟，但是已经能较好的测量时延。
+
