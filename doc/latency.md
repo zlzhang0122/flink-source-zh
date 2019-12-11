@@ -11,3 +11,6 @@ Flink Job端到端延迟是一个重要的指标，用来衡量Flink任务的整
 这个特殊的事件(LatencyMarker)在source上可以配置发送间隔，并由任务Task进行转发。Sink最后接收到LatencyMarks后，将比较LatencyMarker的时间戳
 与当前系统时间，以确定延迟。
 
+LatencyMarker不会增加作业的延迟，但是它与常规记录类似，可以被delay阻塞(例如出现背压时)，因此LatencyMarker的延迟与StreamRecord延迟近似，实际
+上Flink的上游算子除了会向下游算子传递StreamRecord常规记录外，还会传递WaterMark、StreamStatus、LatencyMarker等同样继承了StreamElement抽象
+类的特殊数据类型。
