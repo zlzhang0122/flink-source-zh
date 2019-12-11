@@ -5,4 +5,9 @@ Flink Job端到端延迟是一个重要的指标，用来衡量Flink任务的整
 等，需要一个可度量的Metric指标来实时观测、监控集群全链路时延情况。
 
 我们可以设想，最简单的设计就是在每个记录的source上附加一个摄取时间(ingestion time)时间戳，方案实现简单，但是存在的一个明显问题是：如果某个用户
-不需要使用这个延迟监控功能，那这种设计就带来了额外的开销。
+不需要使用这个延迟监控功能，那这种设计就带来了额外的开销(每个元素+每个元素上的System.currentTimeMilis()需要8个字节)。因此，Flink采用了另外一
+种实现方式，即通过定期发送特殊事件(LatencyMarker)的方式来实现此功能，这类似于通过拓扑发送水印watermark。
+
+这个特殊的事件(LatencyMarker)在source上可以配置发送间隔，并由任务Task进行转发。Sink最后接收到LatencyMarks后，将比较LatencyMarker的时间戳
+与当前系统时间，以确定延迟。
+
