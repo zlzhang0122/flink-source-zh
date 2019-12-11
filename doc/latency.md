@@ -18,3 +18,4 @@ LatencyMarker不会增加作业的延迟，但是它与常规记录类似，可�
 上述建议期望所有的任务管理器TaskManager上的时钟是同步的，否则测量的延迟也包含TaskManager时钟之间的偏移，可以通过JobManager作为计时服务中心来
 缓解这个问题，这样TM就可以通过定期查询JM的当前时间，来确定其时钟的偏移量，这个偏移量会包含TM和JM之间的网络延迟，但是已经能较好的测量时延。
 
+![FLink LatencyMarker](../image/latency.jpg "FLink LatencyMarker")
