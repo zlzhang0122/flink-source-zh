@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3698c706-6cbf-4c64-963f-9b5199f831dd" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/latency.jpg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/doc/latency.md" afterPath="$PROJECT_DIR$/doc/latency.md" />
     </list>
     <ignored path="flink-source-zh.iws" />
@@ -39,7 +38,7 @@
         <entry file="file://$PROJECT_DIR$/doc/latency.md">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="272">
-              <caret line="20" column="43" selection-start-line="20" selection-start-column="43" selection-end-line="20" selection-end-column="43" />
+              <caret line="26" column="22" selection-start-line="26" selection-start-column="22" selection-end-line="26" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -110,8 +109,7 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="121" />
-    <option name="y" value="38" />
+    <option name="y" value="36" />
     <option name="width" value="1280" />
     <option name="height" value="709" />
   </component>
@@ -695,15 +693,15 @@
       <workItem from="1575377524299" duration="1131000" />
       <workItem from="1575618824434" duration="3087000" />
       <workItem from="1575725558040" duration="8941000" />
-      <workItem from="1576057558640" duration="3829000" />
+      <workItem from="1576057558640" duration="4176000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35176000" />
+    <option name="totallyTimeSpent" value="35523000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="121" y="38" width="1280" height="709" extended-state="0" />
+    <frame x="0" y="36" width="1280" height="709" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -998,7 +996,7 @@
     <entry file="file://$PROJECT_DIR$/doc/latency.md">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
-          <caret line="20" column="43" selection-start-line="20" selection-start-column="43" selection-end-line="20" selection-end-column="43" />
+          <caret line="26" column="22" selection-start-line="26" selection-start-column="22" selection-end-line="26" selection-end-column="22" />
           <folding />
         </state>
       </provider>
