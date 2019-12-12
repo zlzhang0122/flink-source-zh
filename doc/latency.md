@@ -25,3 +25,6 @@ metrics.latency.interval)，例如可以配置为2000毫秒触发一次LatencyMa
 
 LatencyMarker不能"多于"常规元素，这确保了测量的延迟接近于常规流元素的端到端延迟，常规操作符Operator(不包括那些参与迭代的Operator)如果不是Sink，
 就会转发延迟标记LatencyMarker。
+
+具有多个输出channel的Operator，随机选择一个channel通道，将LatencyMarker发送给它。这可以确保每个LatencyMarker标记在系统中只存在一次，并且重新
+分区步骤不会导致传输的LatencyMarker数量激增。
