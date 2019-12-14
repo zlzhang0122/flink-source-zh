@@ -28,3 +28,5 @@ LatencyMarker不能"多于"常规元素，这确保了测量的延迟接近于�
 
 具有多个输出channel的Operator，随机选择一个channel通道，将LatencyMarker发送给它。这可以确保每个LatencyMarker标记在系统中只存在一次，并且重新
 分区步骤不会导致传输的LatencyMarker数量激增。
+
+在具体实现上，RecordWriterOutput#
