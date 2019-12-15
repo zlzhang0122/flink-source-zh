@@ -29,4 +29,11 @@ LatencyMarker不能"多于"常规元素，这确保了测量的延迟接近于�
 具有多个输出channel的Operator，随机选择一个channel通道，将LatencyMarker发送给它。这可以确保每个LatencyMarker标记在系统中只存在一次，并且重新
 分区步骤不会导致传输的LatencyMarker数量激增。
 
-在具体实现上，RecordWriterOutput#emitLatencyMarker()方法。
+在具体实现上，RecordWriterOutput#emitLatencyMarker()方法会被StreamSource、AbstractStreamOperator调用，分别实现source和中间operator的
+延迟标记下发。
+
+如果operator是Sink，它将维护每个已知source实例的最后512个LatencyMarker信息。每个已知operator的最小/最大/平均值/p50/p95/p99时延都在Sink的
+LatencyStats对象中，进行汇总(如果没有任何输出operator，就是sink)。
+
+每个中间operator以及sink都会统计自己与source节点的链路延迟，延迟粒度可以细分到Task，用来排查哪台机器的Task时延偏高，可以用于对比分析和运维排查，
+但是如果硬件时钟不正确，则时延测量将不准确。
