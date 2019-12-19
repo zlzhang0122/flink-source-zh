@@ -6,6 +6,8 @@
 
 * [Flink源码阅读3：StreamOperator](../master/doc/streamoperator.md)
 
+* [Flink源码阅读4：StreamTask](../master/doc/streamtask.md)
+
 
 
 ### 扩展阅读

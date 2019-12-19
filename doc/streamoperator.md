@@ -15,7 +15,7 @@ AbstractUdfStreamOperator是继承AbstractStreamOperator的抽象实现类，其
 
 StreamOperator层级结构如下图：
 
- ![StreamOperator](../images/stream-operator.jpg "StreamOperator")
+ ![StreamOperator](../images/stream-operator.png "StreamOperator")
 
 StreamOperator继承的接口有：
  * CheckpointListener接口，其中的notifyCheckpointComplete方法表示checkpoint完成后的回调函数;
