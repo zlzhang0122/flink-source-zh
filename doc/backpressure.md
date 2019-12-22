@@ -7,4 +7,7 @@ backpressure
 在以前开发运维过的Storm框架中，如果一个Storm程序开启了acker机制，那么可以通过设置maxSpoutPending参数来实现背压，当spout已发送未ack的tuple超过了
 参数的预设值时，spout停止发送数据，缺点是这个参数的值比较难以确定，设置小了会影响吞吐量，设置大了又容易导致worker节点OOM。
 
+在新版本的Storm中采用的是通过监控Bolt中接收队列的负载情况，如果超过高水位值就将背压信息写入Zookeeper中，然后Zookeeper会通知所有的worker进入背压状态，
+最后Spout停止发送数据。
+
 那么在Flink中如何实现背压呢？
