@@ -1,0 +1,14 @@
+### Operator Chain
+
+Operator Chain是指将满足一定条件的Operator链在一起，放在同一个Task(也就是线程)中执行，它是Flink任务优化的一种方式。由于Task是一个线程，所以在同一个
+Task里面的Operator的数据传输就从网络传输变成了函数调用，大大的减少了数据传输的过程。常见的chain，如source->map->filter->sink，这样的任务可以链在一
+起，那么既然是要满足一定的条件才能chain在一起，那么究竟要满足什么样的条件呢，以及chain在一起后如何执行呢？
+
+前面在分析任务提交时其实已经分析过chain在一起需要满足的条件了，为了加深印象，我们再来分析一下。
+我们知道，在Flink中有四种图，分别是StreamGraph、JobGraph、ExecutionGraph和物理执行图。其中，前两种是在客户端生成，而ExecutionGraph是在JobMaster中
+生成，最后一种物理执行图是一个虚拟的图，它并不存在相对应的数据结构，它只是运行在每一个TaskManager的一种抽象。
+
+由于Flink当前对于流处理的程序是不作优化的，所以我们在Flink程序中通过System.out.println(env.getExecutionPlan())打印出来的Flink执行计划其实就是
+StreamGraph。而我们在Flink Web UI中看到的图就是JobGraph。JobGraph相对于StreamGraph，其实就是进行了优化，优化就是将能够chain在一起的Operator
+chain在一起，这个chain的过程在客户端生成JobGraph的过程中完成。具体的实现代码在StreamingJobGraphGenerator中。
+
