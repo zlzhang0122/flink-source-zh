@@ -6,7 +6,7 @@ Invokable，它是一个抽象类。
 
 StreamTask的层级结构如下图：
 
- ![StreamTask](../images/stream-task.png "StreamTask")
+ ![StreamTask](../images/streamtask.png "StreamTask")
 
 AbstractInvokable是一个抽象类，代表最顶层的Invokable，它是所有能够被TaskManager执行的task的抽象基类，流式任务和批处理任务都实现了该类，在这个
 抽象类里面声明了最重要的方法invoke，可以认为其是task执行的起点，当执行一个task时，TaskManager会调用invoke方法，并且task所有的操作包括启动输入

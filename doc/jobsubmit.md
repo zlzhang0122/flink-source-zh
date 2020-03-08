@@ -14,7 +14,7 @@ Flink是目前非常火的一款实时流式计算框架，阿里对其的加持
 
 但是不管它的组件和代码怎么变，任务的提交不会变，所以这里也就先从任务的提交开始分析。Flink任务在被提交到Yarn上后会经过如下流程,具体如下:
 
- ![Flink提交到yarn](../images/flink-submit-to-yarn.png "Flink提交到yarn")
+ ![Flink提交到yarn](../images/flinksubmittoyarn.png "Flink提交到yarn")
 
  1. Client从客户端代码生成的StreamGraph提取出JobGraph;
 

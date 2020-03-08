@@ -10,6 +10,8 @@
 
 * [Flink源码阅读5：背压](../master/doc/backpressure.md)
 
+* [Flink源码阅读5：类型擦除和类型暗示](../master/doc/typeerasureandtypehint.md)
+
 
 
 ### 扩展阅读

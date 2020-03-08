@@ -21,7 +21,7 @@
 
 数据在节点之间传递的具体流程如下图:
 
-![Shuffle-data](../images/shuffle-data.png "Shuffle-data")
+![Shuffle-data](../images/shuffledata.png "Shuffle-data")
 
  * 数据在operator处理完成后,先交给RecordWriter,每条记录都要选择一个下游节点,所以要经过ChannelSelector;
  * 在每个channel都有一个serializer,把这条Record序列化为ByteBuffer;
