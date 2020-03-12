@@ -77,8 +77,8 @@
         <entry file="file://$PROJECT_DIR$/doc/2pc.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="FIRST">
-              <first_editor relative-caret-position="105">
-                <caret line="7" column="57" selection-start-line="7" selection-start-column="57" selection-end-line="7" selection-end-column="57" />
+              <first_editor relative-caret-position="267">
+                <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -157,8 +157,7 @@
     <treeState />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-106" />
-    <option name="y" value="352" />
+    <option name="y" value="260" />
     <option name="width" value="1280" />
     <option name="height" value="709" />
   </component>
@@ -188,6 +187,8 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -236,8 +237,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -775,15 +774,16 @@
       <workItem from="1583503643178" duration="420000" />
       <workItem from="1583630787226" duration="9551000" />
       <workItem from="1583682119635" duration="284000" />
-      <workItem from="1583852154124" duration="948000" />
+      <workItem from="1583852154124" duration="1698000" />
+      <workItem from="1584018020922" duration="1517000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="86007000" />
+    <option name="totallyTimeSpent" value="88274000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-106" y="352" width="1280" height="709" extended-state="0" />
+    <frame x="0" y="260" width="1280" height="709" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1430,8 +1430,8 @@
     <entry file="file://$PROJECT_DIR$/doc/2pc.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="FIRST">
-          <first_editor relative-caret-position="105">
-            <caret line="7" column="57" selection-start-line="7" selection-start-column="57" selection-end-line="7" selection-end-column="57" />
+          <first_editor relative-caret-position="267">
+            <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
             <folding />
           </first_editor>
           <second_editor />
