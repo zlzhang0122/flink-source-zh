@@ -18,8 +18,7 @@
 
 Flink以该算法为基础，实现了异步屏障快照(ABS)算法。简单的说，Flink的JobManager会周期性的向每个SourceTask发送一条包含一个新checkpointId
 的消息，间隔时间由配置env.enableCheckpointing(间隔时间毫秒)控制，以初始化一个checkpoint。当SourceTask收到这条消息时就会停止向下游发送
-消息，并在StateBackend生成一个包含本地状态的checkpoint，并广播一种特殊的记录checkpoint barrier(作用类似于Chandy-Lamport算法中的特殊标
-记信息)。
+消息，广播一种特殊的记录checkpoint barrier(作用类似于Chandy-Lamport算法中的特殊标记信息)，并在StateBackend生成一个包含本地状态的checkpoint。
 
 CheckpointBarrier类有三个成员变量：
   * id：它与checkpointId对应，并保持严格递增，因此值越大表明checkpoint越新;
@@ -29,7 +28,8 @@ CheckpointBarrier类有三个成员变量：
 
   * checkpointOptions：进行checkpoint操作时的选项，包括checkpoint的类型及保存位置的设置;
 
-我们来看一下整个快照触发的过程，一个非常长的调用链...
+我们来看一下整个source端快照触发的过程，一个非常长的调用链...
+
 CheckpointCoordinator类用于协调算子和状态的分布式快照的逻辑，其会启动一个定时器定时调用ScheduledTrigger的run()方法，这个run()方法内会
 调用triggerCheckpoint()方法，它会调用startTriggeringCheckpoint()方法，在其中经历一些必要的校验后会调用snapshotTaskState()方法，这个
 方法会根据会向根据是同步或异步配置而触发同步或异步的checkpoint。但不管是同步或异步，最终都会调用Execution的triggerCheckpointHelper()方
@@ -57,9 +57,19 @@ once语义的吞吐量会较at least once要低(有得必有失嘛，不然at le
 中调用了InputProcessorUtil.createCheckpointedInputGate()方法或InputProcessorUtil.createCheckpointedInputGatePair()方法中调用
 createCheckpointBarrierHandler来创建对应的checkpoint barrier handler处理器，这个处理器会判断checkpoint的模式，如果是Exactly once语义
 则使用CheckpointBarrierAligner，如果是at least once则使用CheckpointBarrierTracker。这两个类均实现了CheckpointBarrierHandler接口，
-主要负责checkpoint barrier到来时候的对齐处理逻辑。
+主要负责checkpoint barrier到来时候的对齐处理逻辑。同时，我们也可以确定，Flink只支持at least once语义和exactly once语义，不支持storm
+曾经支持的at most语义。
 
+CheckpointBarrierAligner类实现了exactly once语义下的barrier对齐的逻辑，具体的对齐逻辑位于该类的processBarrier方法中。主要流程如下图所示：
+![Barrier对齐](../images/exactlyonce.png "Barrier对齐")
 
+而CheckpointBarrierTracker类实现了at least once语义下的barrier处理逻辑，具体的处理逻辑同样位于processBarrier方法中。主要流程如下图所示：
+![Barrier处理](../images/atleastonce.png "Barrier处理")
+
+CheckpointBarrierHandler的processBarrier方法是在CheckpointedInputGate类中的pollNext()方法调用，而CheckpointedInputGate是InputGate
+的一个包装类，除了负责读取上游节点的数据外，也会对接收到的checkpoint barrier做出响应。也就是如果需要读取数据的channel被barrierHandler阻塞，
+那么这个channel到来的数据会缓存在bufferStorage中，直到该通道取消阻塞，而从该InputGate读取数据的时候会优先读取bufferStorage中的数据。如果
+没有才会从channel读取数据。
 
 最终checkpoint barrier会到达SinkTask，SinkTask同样会根据语义进行对齐(这与其它的中间operator的处理类似)，当它收到全部的checkpoint barrier
 时会给自己的状态做checkpoint并在完成后向JobManager发送确认其已经完成checkpoint。当JobManager收到该应用的所有Task都已经发送确认信息后，表明
