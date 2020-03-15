@@ -8,9 +8,11 @@
 
 * [Flink源码阅读4：StreamTask](../master/doc/streamtask.md)
 
-* [Flink源码阅读5：背压](../master/doc/backpressure.md)
+* [Flink源码阅读5：Java泛型类型擦除和Flink类型暗示](../master/doc/typeerasureandtypehint.md)
 
-* [Flink源码阅读5：类型擦除和类型暗示](../master/doc/typeerasureandtypehint.md)
+* [Flink源码阅读6：两阶段提交](../master/doc/2pc.md)
+
+* [Flink源码阅读7：分布式快照](../master/doc/chandylamport.md)
 
 
 
