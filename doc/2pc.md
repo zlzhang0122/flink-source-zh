@@ -55,7 +55,8 @@ TwoPhaseCommitSinkFunction类的继承体系如下图所示。
 
 由此可见，输出端也必须能对事务性写入提供支持，当然如果输出sink也是kafka 0.11及以上版本肯定是没问题的，如果是其它的输出端也需要其支持事务或
 实现了写入的幂等才行。以kafka来看，在FlinkKafkaProducer011类中实现了beginTransaction()方法。当要求支持exactly once语义时，每次都会
-调用createTransactionalProducer()来生成包含事务ID的producer。而preCommit()方法的实现就很简单了，就是直接调用了producer的flush()方法。
+调用createTransactionalProducer()来生成包含事务ID的producer。而preCommit()方法的实现就很简单了，就是直接调用了producer的flush()方法，
+它是在Sink算子进行snapshot操作时被调用的。
 
 下图是官方给出的两阶段提交中的提交请求阶段的解释图：
 ![两阶段提交-预提交](../images/ckand2pcprepare.png "两阶段提交-预提交")
