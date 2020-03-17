@@ -21,7 +21,8 @@ Flink以该算法为基础，实现了异步屏障快照(ABS)算法。简单的�
 消息，广播一种特殊的记录checkpoint barrier(作用类似于Chandy-Lamport算法中的特殊标记信息)，并在StateBackend生成一个包含本地状态的checkpoint。
 
 CheckpointBarrier类有三个成员变量：
-  * id：它与checkpointId对应，并保持严格递增，因此值越大表明checkpoint越新;
+  * id：它与checkpointId对应，并保持严格递增，因此值越大表明checkpoint越新；如果是standalone模式则是原子变量，否则如果是HA模式则使用
+  zookeeper分布式集群Curator的分布式整型int计数器SharedCount来确保跨JobManager的严格递增;
 
   * timestamp：记录checkpoint barrier产生的时间，ScheduledTrigger这个线程的run方法调用triggerCheckpoint触发checkpoint时传入的是
   系统当前的时间，并将其作为checkpoint的timestamp的值;
