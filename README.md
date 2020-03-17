@@ -14,6 +14,8 @@
 
 * [Flink源码阅读7：分布式快照](../master/doc/chandylamport.md)
 
+* [Flink源码阅读8：窗口触发器](../master/doc/trigger.md)
+
 
 
 ### 扩展阅读
