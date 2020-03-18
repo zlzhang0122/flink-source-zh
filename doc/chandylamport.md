@@ -41,8 +41,25 @@ CheckpointCoordinator类用于协调算子和状态的分布式快照的逻辑�
 方法，如果这个Task是SourceStreamTask，它就会调用到基类StreamTask的triggerCheckpointAsync()方法，向其执行线程提交一个triggerCheckpoint()
 请求触发异步调用，由于是在Source端，所以在checkpoint时并不需要进行对齐，而是直接触发StreamTask的performCheckpoint()方法的调用，这个方法
 会通过actionExecutor来分三步调用：第一步调用operatorChain的prepareSnapshotPreBarrier()方法来做一些checkpoint前的准备工作，第二部调用
-operatorChain的broadcastCheckpointBarrier()将自己收到的CheckpointBarrier向下游传播，第三步Task调用自己的executeCheckpointing()方法
-开始进行自己的异步checkpoint。
+operatorChain的broadcastCheckpointBarrier()将自己收到的CheckpointBarrier向下游传播，第三步调用checkpointState()方法开始进行自己的
+异步checkpoint。
+
+在上面的checkpointState()方法中，会根据checkpointId和设置的checkpoint位置存放信息来构建一个checkpoint output流的工厂CheckpointStreamFactory。
+这个工厂被用于checkpoint持久化数据，它会创建一个CheckpointStateOutputStream，这个Stream对应一个FSDataOutputStream，如果是使用FsStateBackend
+或是RocksDBStateBackend作为状态后端，FSDataOutputStream对应的就是分布式文件系统的输入流实例(此处的输出就是分布式文件系统的输入)，因此
+它会将本地文件写往分布式文件系统，完成后调用closeAndGetHandle()方法关闭这个输出流，生成StreamStateHandle，这是个文件句柄，将这个句柄发
+给JM，将来能够通过这个句柄的openInputStream()读取状态数据。扯的有点远了。。。继续吧，在创建完成这个checkpoint流工厂的创建后，会调用内部类
+CheckpointingOperation的executeCheckpointing()方法，在这个方法中会调用checkpointStreamOperator()方法对所有的算子进行快照(不管是否
+chain在一起，如果chain在一起则分开进行快照)。在checkpointStreamOperator()方法调用了每个算子的snapshotState()方法，并调用到AbstractStreamOperator
+类的snapshotState()方法，这是个通用实现，在这个方法中，先调用了snapshotState(snapshotContext)方法，这个方法主要实现了Raw State的快照
+(Raw State存放的是原始状态的快照，Flink对这种状态的数据结构一无所知，只有在用户自定义的operator中会使用到，一般不用)。紧接着，它分别调用
+OperatorStateBackend和KeyedStateBackend的snapshot方法对Operator State和Keyed State进行快照。
+
+先来分析下Operator State的快照吧，在operatorStateBackend.snapshot()方法会对应SnapshotStrategy的snapshot()方法调用，这是个接口，我们
+来看一下DefaultOperatorStateBackendSnapshotStrategy类对其的实现，在DefaultOperatorStateBackendSnapshotStrategy类的snapshot()
+方法中，它对List State和Broadcast State进行了深拷贝，然后异步调用streamFactory.createCheckpointStateOutputStream()方法获取checkpoint
+输出流，并将之前深拷贝得到的List State和Broadcast State数据写入checkpoint文件中，最后创建StreamStateHandle，至此就完成了异步写入checkpoint
+的操作。
 
 算子Operator会用checkpoint barrier来对流进行划分，在它之前的数据被划分到checkpoint中，而在其之后的数据被划分到之后的checkpoint中。当
 StateBackend已经完成checkpoint时会提醒Task，Task会发送确认消息到JobManager的CheckpointCoordinator确认该检查点。
