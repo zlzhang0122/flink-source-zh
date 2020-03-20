@@ -34,12 +34,13 @@
 
 Flink作为一款时下最火爆的流式处理引擎，能够提供exactly once的语义保证，仅仅flink内部是精确一次的实际上没有多大的意义，因此人们提出的端到端的
 exactly once语义保证，即输入、处理程序、输出这个三个部分协同作用，共同实现整个流程的精确一次语义。端到端的exactly once的实现需要数据的输入、
-处理和输出都能支持exactly once。在大数据实时处理领域，使用最多的数据输入端应该是kafka了，因此它也需要支持端到端的精确一致语义，在kafka 0.11
-版本之前，其实它是不支持的，此时就只能通过at least once语义配合下游的消息幂等处理来间接实现exactly once，但是此时由于需要下游的支持所以存在
-一定的局限性，从0.11版本开始，kafka通过为每一个partition维护一个单调递增的sequence number，从而为每一批消息都生成一个序列号，通过这个序列号
-来过滤重复的消息，从而实现数据的写入幂等，同时它又通过引入Transaction Coordinator来支持了事务。对于处理程序来说，Flink内部是通过检查点机
-制(checkpoint)和分布式快照来实现exactly once的。同时，在Flink中提供了基于2PC的SinkFunction，叫做TwoPhaseCommitSinkFunction来对输入
-端的事务性写入提供基础性的支持，这是个抽象类，所有需要保证exactly once的Sink逻辑都需要继承这个类。
+处理和输出都能支持exactly once。从数据的输入端角度来看就是必须能支持一定时间内的消息重放和事务性提交，在大数据实时处理领域，使用最多的数据输
+入端应该是kafka了，因此它也需要支持端到端的精确一致语义，在kafka 0.11版本之前，其实它是不支持的，此时就只能通过at least once语义配合下游的
+消息幂等处理来间接实现exactly once，但是此时由于需要下游的支持所以存在一定的局限性，从0.11版本开始，kafka通过为每一个partition维护一个单调
+递增的sequence number，从而为每一批消息都生成一个序列号，通过这个序列号来过滤重复的消息，从而实现数据的写入幂等，同时它又通过引入Transaction
+Coordinator来支持了事务。对于处理程序来说，Flink内部是通过检查点机制(checkpoint)和分布式快照来实现exactly once的。同时，在Flink中提供了基
+于2PC的SinkFunction，叫做TwoPhaseCommitSinkFunction来对输入端的事务性写入提供基础性的支持，这是个抽象类，所有需要保证exactly once的Sink
+逻辑都需要继承这个类。
 
 TwoPhaseCommitSinkFunction类的继承体系如下图所示。
 ![TwoPhaseCommitSinkFunction继承体系](../images/2pc.png "TwoPhaseCommitSinkFunction继承体系")
