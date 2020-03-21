@@ -16,6 +16,8 @@
 
 * [Flink源码阅读8：窗口触发器](../master/doc/trigger.md)
 
+* [Flink源码阅读9：CAP和BASE理论](../master/doc/capandbase.md)
+
 
 
 ### 扩展阅读
