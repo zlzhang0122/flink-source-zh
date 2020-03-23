@@ -16,12 +16,12 @@
 
 * [Flink源码阅读8：窗口触发器](../master/doc/trigger.md)
 
-* [Flink源码阅读9：CAP和BASE理论](../master/doc/capandbase.md)
-
-* [Flink源码阅读10：流分区器](../master/doc/partitioner.md)
+* [Flink源码阅读9：流分区器](../master/doc/partitioner.md)
 
 
 
 ### 扩展阅读
 
 * [Flink扩展阅读：全链路延迟测量](../master/doc/latency.md)
+
+* [Flink扩展阅读：分布式系统中的CAP和BASE理论](../master/doc/capandbase.md)
