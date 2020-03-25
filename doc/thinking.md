@@ -59,8 +59,10 @@ new Partitioner<String>(){
     public int partition(String key, int numPartitions){
         int hashCode = key.hashCode();
         int hashCodeAbs = Math.abs(hashCode);
-        int result = hashCodeAbs % numPartitions;
-        return (result < 0 ? (result + numPartitions) : result);
+        int result = (hashCodeAbs & 0x7FFFFFFF) % numPartitions;
+        //int result = hashCodeAbs % numPartitions;
+        //result = (result < 0 ? (result + numPartitions) : result);
+        return result;
     }
 }
 
