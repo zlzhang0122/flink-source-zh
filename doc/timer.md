@@ -41,4 +41,17 @@ Flink中非常重要的一个概念，在进行checkpoint时就有遇到过，�
 地维护的所有的key。因此，deduplicationMapsByKeyGroup主要用于在KeyGroup级别对key进行去重，数组中的每个元素就是一个HashMap，也对应一个KeyGroup。
 HashMap通过putIfAbsent()方法添加时，只有当key不存在时才能添加进去，这也是去重得以实现的原因。
 
+InternalTimerServiceImpl是Timer方法的最底层实现，从这个里面方法的实现来看，注册Timer实际上就是通过时间戳、key和命名空间构造TimerHeapInternalTimer
+实例，并将这些实例加入到对应的优先级队列。值得注意的是，当注册基于处理时间的定时器时，要先检查注册的定时器时间戳与当前在最小堆堆顶的定时器时间戳的大小关系。
+如果前者比后者要小，就会用前者替代后者，因为处理时间永远是线性增长的。
 
+那么当定时器注册好之后该如何触发呢？在注册处理时间定时器时，通过this::onProcessingTime参数指定了一个回调函数，当处理时间到了所注册的时间戳时就会触发回
+调，并按顺序从队列中获取注册时间戳小于等于当前处理时间的所有Timer，并执行triggerTarget.onProcessingTime()方法，也就是KeyedProcessOperator.onProcessingTime()
+方法，于是就执行了用户自定义的方法。
+
+最后再来看processingTimeService.registerTimer()方法在SystemProcessingTimeService的实现，它使用调度线程池实现回调，onProcessingTime()在ScheduledTask
+线程中被回调，而ScheduledTask线程按照Timer的时间戳来调度。至此，ProcessingTime的大致处理逻辑已经分析得差不多了。
+
+再来看看事件时间的触发情况吧，事件时间与处理系统内部的时间戳无关，而与水印有关。在水印到达时，算子的基类AbstractStreamOperator.processWatermark()方法就会被调
+用，并调用InternalTimeServiceManager.processWatermark()方法，最终在InternalTimerServiceImpl.advanceWatermark()方法中触发了triggerTarget.onEventTime()
+的调用，并实现了基于事件事件的处理。
