@@ -37,9 +37,22 @@ InternalTimer的实现是TimerHeapInternalTimer，从它可以看出，Timer的S
 InternalTimeServiceManager.createTimerPriorityQueue()方法通过调用priorityQueueSetFactory.create()方法创建优先级队列的集合HeapPriorityQueueSet。
 它的实现与Java自带的PriorityQueue的实现差不太多，只是加入了快速删除和去重逻辑。这个里面涉及到了KeyGroup和KeyGroupRange的概念，实际上KeyGroup是
 Flink中非常重要的一个概念，在进行checkpoint时就有遇到过，它是Flink内部KeyedState的管理的原子单位，也是一些key的集合。一个任务的KeyGroup的数量与
-其最大并行度一致，而将key分配到KeyGroup则是使用哈希值取模的方式。而KeyGroupRange顾名思义就是一些连续的KeyGroup的范围，它也可以看作是当前子任务在本
+其最大并行度一致，而将key分配到KeyGroup则是使用哈希值取模的方式。
+
+为什么要引入KeyGroup的概念呢？我们设想一下，如果现在改变了某一个算子的并行度，如果这个算子没有状态，实现起来其实很简单。但是如果这个算子有状态呢？
+如果Flink中的key是按照hash(key)%parallelism的规则分配到各个子Task上去的，那么我们就必须在改变算子并行度的同时，根据新分配的key集合从分布式存
+储中取回对应的Keyed State数据，由于parallelism的取值变化对规则的影响特别大(类比在负载均衡策略中，根据机器个数进行请求的负载均衡，这也是一致性
+哈希出现的原因)，所以这会是个非常耗时和低效的操作。为了解决这个问题，Flink提出了KeyGroup的概念。
+
+
+
+
+而KeyGroupRange顾名思义就是一些连续的KeyGroup的范围，它也可以看作是当前子任务在本
 地维护的所有的key。因此，deduplicationMapsByKeyGroup主要用于在KeyGroup级别对key进行去重，数组中的每个元素就是一个HashMap，也对应一个KeyGroup。
 HashMap通过putIfAbsent()方法添加时，只有当key不存在时才能添加进去，这也是去重得以实现的原因。
+
+
+
 
 InternalTimerServiceImpl是Timer方法的最底层实现，从这个里面方法的实现来看，注册Timer实际上就是通过时间戳、key和命名空间构造TimerHeapInternalTimer
 实例，并将这些实例加入到对应的优先级队列。值得注意的是，当注册基于处理时间的定时器时，要先检查注册的定时器时间戳与当前在最小堆堆顶的定时器时间戳的大小关系。
@@ -55,3 +68,5 @@ InternalTimerServiceImpl是Timer方法的最底层实现，从这个里面方法
 再来看看事件时间的触发情况吧，事件时间与处理系统内部的时间戳无关，而与水印有关。在水印到达时，算子的基类AbstractStreamOperator.processWatermark()方法就会被调
 用，并调用InternalTimeServiceManager.processWatermark()方法，最终在InternalTimerServiceImpl.advanceWatermark()方法中触发了triggerTarget.onEventTime()
 的调用，并实现了基于事件事件的处理。
+
+
