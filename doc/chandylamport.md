@@ -64,6 +64,9 @@ OperatorStateBackend和KeyedStateBackend的snapshot方法对Operator State和Key
 输出流，并将之前深拷贝得到的List State和Broadcast State数据写入checkpoint文件中，最后创建StreamStateHandle，至此就完成了异步写入checkpoint
 的操作。
 
+文字来看可能不太清晰，来张图看下：
+![Checkpoint](../images/checkpoint.jpeg "Checkpoint")
+
 算子Operator会用checkpoint barrier来对流进行划分，在它之前的数据被划分到checkpoint中，而在其之后的数据被划分到之后的checkpoint中。当
 StateBackend已经完成checkpoint时会提醒Task，Task会发送确认消息到JobManager的CheckpointCoordinator确认该检查点。
 

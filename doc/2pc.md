@@ -60,7 +60,7 @@ TwoPhaseCommitSinkFunction类的继承体系如下图所示。
 它是在Sink算子进行snapshot操作时被调用的。
 
 下图是官方给出的两阶段提交中的提交请求阶段的解释图：
-![两阶段提交-预提交](../images/ckand2pcprepare.png "两阶段提交-预提交")
+![两阶段提交-预提交](../images/cpand2pcprepare.png "两阶段提交-预提交")
 
 从图中可以看到，每次进行checkpoint时，JM会在数据流中插入一个barrier，这个barrier会随着DAG图向下游传递，每经过一个算子都会触发checkpoint将
 状态快照写入状态后端，当这个barrier到达kafka sink时，通过KafkaProducer.flush()方法将数据刷写到磁盘，但是此时还未真正提交。
@@ -70,7 +70,7 @@ TwoPhaseCommitSinkFunction类中的notifyCheckpointComplete()方法和recoverAnd
 所有的检查点都完成后或是在失败恢复时被调用。
 
 下图是官方给出的两阶段提交中的提交阶段的解释图：
-![两阶段提交-提交](../images/ckand2pccommit.png "两阶段提交-提交")
+![两阶段提交-提交](../images/cpand2pccommit.png "两阶段提交-提交")
 
 由此可见，只有在所有的检查点都已经成功完成的情况下，写入checkpoint才会成功。对比两阶段提交的理论，可知这也符合两阶段提交的流程。其中，JM作为了
 协调者的角色，而各个operator作为了参与者的角色(虽然只有sink这个参与者会真正执行提交)。如果有检查点失败，则分布式快照无法完成，如果最终重试也失败
