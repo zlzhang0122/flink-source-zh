@@ -36,23 +36,27 @@ InternalTimer的实现是TimerHeapInternalTimer，从它可以看出，Timer的S
 
 InternalTimeServiceManager.createTimerPriorityQueue()方法通过调用priorityQueueSetFactory.create()方法创建优先级队列的集合HeapPriorityQueueSet。
 它的实现与Java自带的PriorityQueue的实现差不太多，只是加入了快速删除和去重逻辑。这个里面涉及到了KeyGroup和KeyGroupRange的概念，实际上KeyGroup是
-Flink中非常重要的一个概念，在进行checkpoint时就有遇到过，它是Flink内部KeyedState的管理的原子单位，也是一些key的集合。一个任务的KeyGroup的数量与
-其最大并行度一致，而将key分配到KeyGroup则是使用哈希值取模的方式。
+Flink中非常重要的一个概念，在进行checkpoint时就有遇到过，它是Flink内部KeyedState的管理的原子单位，也是一些key的集合，一个任务的KeyGroup的数量与
+其最大并行度一致。deduplicationMapsByKeyGroup主要用于在KeyGroup级别对key进行去重，数组中的每个元素就是一个HashMap，也对应一个KeyGroup。HashMap
+通过putIfAbsent()方法添加时，只有当key不存在时才能添加进去，这也是去重得以实现的原因。
 
 为什么要引入KeyGroup的概念呢？我们设想一下，如果现在改变了某一个算子的并行度，如果这个算子没有状态，实现起来其实很简单。但是如果这个算子有状态呢？
 如果Flink中的key是按照hash(key)%parallelism的规则分配到各个子Task上去的，那么我们就必须在改变算子并行度的同时，根据新分配的key集合从分布式存
 储中取回对应的Keyed State数据，由于parallelism的取值变化对规则的影响特别大(类比在负载均衡策略中，根据机器个数进行请求的负载均衡，这也是一致性
-哈希出现的原因)，所以这会是个非常耗时和低效的操作。为了解决这个问题，Flink提出了KeyGroup的概念。
+哈希出现的原因)，所以这会是个非常耗时和低效的操作。为了解决这个问题，Flink提出了Key Group的概念。
 
+Key Group是Keyed State分配的原子单位，而其数量与定义的最大并行度相同，所以Key Group的索引范围位于0到最大并行度减去1的区间内。每个子Task都会处理
+一个或多个Key Group，也就是KeyGroupRange。而KeyGroupRange顾名思义就是一些连续的Key Group的范围，它也可以看作是当前子任务在本地维护的所有的key。
+那么如何确定一个key应该分配到哪个Key Group中呢？从KeyGroupRangeAssignment.assignToKeyGroup()方法可以看到其是先对key取哈希值，再做murmurHash
+后，再对最大并行度取余得到了Key Group的索引。但是这样得到的索引的范围再前面提到过是0到最大并行度减去1，是无法直接分配给子Task的，还必须有算法决定一个
+子Task该处理哪些KeyGroup，这个在KeyGroupRangeAssignment.computeKeyGroupRangeForOperatorIndex()方法中，其是由并行度、最大并行度和算子实例的
+ID共同决定的，具体的分配逻辑是：
+  * startKeyGroup：((operatorIndex * maxParallelism + parallelism - 1) / parallelism);
 
+  * endKeyGroup：((operatorIndex + 1) * maxParallelism - 1) / parallelism;
 
-
-而KeyGroupRange顾名思义就是一些连续的KeyGroup的范围，它也可以看作是当前子任务在本
-地维护的所有的key。因此，deduplicationMapsByKeyGroup主要用于在KeyGroup级别对key进行去重，数组中的每个元素就是一个HashMap，也对应一个KeyGroup。
-HashMap通过putIfAbsent()方法添加时，只有当key不存在时才能添加进去，这也是去重得以实现的原因。
-
-
-
+根据上面的分配逻辑可见，在将Key Group作为Keyed State的基本分配单元之后，修改并行度时的本地性差和随机读的问题都得到了部分的解决。不过，也能很明显的看
+出，最大并行度对Key Group分配的影响非常明显，因此轻易不要修改最大并行度的值，在computeDefaultMaxParallelism()方法中给出了计算默认最大并行度的逻辑。
 
 InternalTimerServiceImpl是Timer方法的最底层实现，从这个里面方法的实现来看，注册Timer实际上就是通过时间戳、key和命名空间构造TimerHeapInternalTimer
 实例，并将这些实例加入到对应的优先级队列。值得注意的是，当注册基于处理时间的定时器时，要先检查注册的定时器时间戳与当前在最小堆堆顶的定时器时间戳的大小关系。
