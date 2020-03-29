@@ -8,7 +8,7 @@ SourceFunction是定义Flink Source所有实现的根接口，其中定义的run
 控制是否结束，cancel()方法则是用来打断run()方法中的循环，终止产生数据。
 
 SourceFunction中还在内部嵌套定义了SourceContext接口，它表示这个Source对应的上下文，用于发射数据。其中起主要作用的是前三个方法：
-  * collect()：发射一个不带自定义时间戳的元素。如果流程序的时间特征(TimeCharacteristic)是处理时间，则元素没有时间戳；如果是摄入时间(IngestionTime)，
+  * collect()：发射一个不带自定义时间戳的元素。如果程序的时间特征(TimeCharacteristic)是处理时间，则元素没有时间戳；如果是摄入时间(IngestionTime)，
   元素会附带系统时间；如果是事件时间(EventTime)，那么初始时没有时间戳，但一旦要做与时间戳相关的操作(如，window)时，就必须用TimestampAssigner
   给它设定一个;
 
@@ -20,3 +20,9 @@ SourceFunction中还在内部嵌套定义了SourceContext接口，它表示这�
 SourceFunction有一些其他实现，如：ParallelSourceFunction表示该Source可以按照设置的并行度并发执行；RichSourceFunction是继承自RichFunction，
 表示该Source可以感知到运行时上下文(RuntimeContext，如Task、State及并行度的信息)，以及可以自定义初始化和销毁逻辑(通过open/close方法)。RichParallelSourceFunction
 则表示的是以上两者的结合。
+
+如同SourceFunction是定义Flink Source所有实现的根接口，SinkFunction是定义Flink Sink所有实现的根接口。但是它的定义比SourceFunction要简单，
+只有一个invoke()方法，对收集来的每条数据都会用它来进行处理。SinkFunction也有对应的上下文对象Context，可以从中获得当前处理时间、当前水印和时间
+戳，而且它也有衍生出来的RichSinkFunction函数版本。Flink内部提供了一个最简单的实现DiscardingSink。顾名思义，它就是将所有汇集的数据全部丢弃。
+
+
