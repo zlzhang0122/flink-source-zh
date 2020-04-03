@@ -12,8 +12,8 @@ Flink提供了统一的DataStream.assignTimestampsAndWatermarks()方法来提取
 周期。正常的流程上来讲，我们需要先通过实现extractTimestamp()方法来抽取事件时间，然后实现getCurrentWatermark()方法产生水印，不过Flink已经
 默认提供了3种内置的实现类，我们可以直接使用来抽取事件事件并产生水印：
   * AscendingTimestampExtractor：它产生的时间戳和水印必须是单调非递减的，我们通过覆写extractAscendingTimestamp()方法抽取时间戳。如果产
-  生了递减的时间戳，就要使用名为MonotonyViolationHandler的组件处理异常，有三种方式进行处理：IgnoringHandler直接忽略，FailingHandler抛出
-  RuntimeException，LoggingHandler打印警告日志(默认行为)。一般来说单调递增的事件时间并符合现实中的情况，所以用得不是不多;
+  生了递减的时间戳，就要使用名为MonotonyViolationHandler的组件处理异常，有三种方式进行处理：IgnoringHandler直接忽略、FailingHandler抛出
+  RuntimeException、LoggingHandler打印警告日志(默认行为)。一般来说单调递增的事件时间并符合现实中的情况，所以用得不是不多;
 
   * BoundedOutOfOrdernessTimestampExtractor：它产生的时间戳和水印允许一定的乱序，构造它时传入的参数maxOutOfOrderness就是允许乱序区间的
   长度，而实际发射的水印为通过覆写extractTimestamp()方法提取出来的时间戳减去乱序区间，相当于让水印时间往前调一些。乱序区间的长度需要根据实际
