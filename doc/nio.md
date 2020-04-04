@@ -48,6 +48,8 @@ IO的两个阶段都被阻塞了。
   * 异步IO：不会阻塞调用者，而是在完成后通过回调函数通知应用数据拷贝结束;
 
 Flink从1.2版本开始引入了异步IO机制，专门用于解决Flink计算过程中与外部系统的交互，它提供了一个能够异步请求外部系统的客户端，也就是AsyncWaitOperator，
-由AsyncDataStream.addOperator()/orderedWait()/unorderedWait()产生，是异步IO的核心。
-
+由AsyncDataStream.addOperator()/orderedWait()/unorderedWait()产生，是异步IO的核心。在其构造函数中传入了AsyncFunction函数，这是个执行异步操作
+的函数，用户需要覆写其asyncInvoke()方法实现异步操作完成后的逻辑。StreamElementQueue是一个包含StreamElementQueueEntry的队列，底层实现是ArrayDeque，
+也就是数组实现的双端队列。StreamElementQueueEntry是对StreamElement的简单封装，而StreamElement则是Flink中的基础概念，它可以是Watermark、
+StreamStatus、Record或LatencyMarker等的简单封装(简单的说，就是Flink中流动的流数据的类型的简单封装)，通过CompleteableFuture实现了异步的返回。
 
