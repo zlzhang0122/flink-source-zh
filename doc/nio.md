@@ -81,3 +81,7 @@ AsyncDataStream.orderedWait()/unorderedWait()的输出是需要考虑顺序性�
 额外说一下，实际工作中由于Linux中的AIO并不完善，所以在Linux下的IO模型更多的是以NIO为主。比如常见的使用IO多路复用技术结合线程池来实现的高并发，这也是常说
 的Reactor，如我们工作中经常遇到的Redis(单Reactor单进程模式)、Nginx(单Reactor多进程)、Netty(多Reactor多线程模式)等。C语言编写的系统更喜欢使用进程模
 式(单Reactor下更是如此)，而Java及其它的JVM语言更喜欢使用线程模式，因为JVM本身就是一个进程，JVM中有很多线程，业务线程只是其中的一个而已。
+
+关于IO模型的介绍到此就结束了。
+
+今天是清明节，愿在抗击疫情中牺牲的烈士和逝世的同胞在天之灵能够安息！阿门！！！
