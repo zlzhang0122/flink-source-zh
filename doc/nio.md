@@ -1,4 +1,4 @@
-### IO模型及NIO
+### IO模型及NIO、AIO
 
 我们知道在Unix网络编程中的五种IO模型，它们分别是：
   * 阻塞IO(BIO)
@@ -48,8 +48,36 @@ IO的两个阶段都被阻塞了。
   * 异步IO：不会阻塞调用者，而是在完成后通过回调函数通知应用数据拷贝结束;
 
 Flink从1.2版本开始引入了异步IO机制，专门用于解决Flink计算过程中与外部系统的交互，它提供了一个能够异步请求外部系统的客户端，也就是AsyncWaitOperator，
-由AsyncDataStream.addOperator()/orderedWait()/unorderedWait()产生，是异步IO的核心。在其构造函数中传入了AsyncFunction函数，这是个执行异步操作
-的函数，用户需要覆写其asyncInvoke()方法实现异步操作完成后的逻辑。StreamElementQueue是一个包含StreamElementQueueEntry的队列，底层实现是ArrayDeque，
+由AsyncDataStream.addOperator()/orderedWait()/unorderedWait()产生，是异步IO的核心。在其构造函数中传入了AsyncFunction类，这是个执行异步操作
+的类，用户需要覆写其asyncInvoke()方法实现异步操作完成后的逻辑。StreamElementQueue是一个包含StreamElementQueueEntry的队列，底层实现是ArrayDeque，
 也就是数组实现的双端队列。StreamElementQueueEntry是对StreamElement的简单封装，而StreamElement则是Flink中的基础概念，它可以是Watermark、
-StreamStatus、Record或LatencyMarker等的简单封装(简单的说，就是Flink中流动的流数据的类型的简单封装)，通过CompleteableFuture实现了异步的返回。
+StreamStatus、Record或LatencyMarker等的简单封装(简单的说，就是Flink中流动的流数据的类型的简单封装)，通过CompletableFuture实现了异步的返回。可以
+通过一张图来进行一下简单的了解：
+![AsyncIO](../images/asyncio.png "AsyncIO")
 
+从上图可以看出，上游的StreamElement进入AsyncWaitOperator的StreamElementQueue，并被封装为StreamElementQueueEntry的实例，然后AsyncWaitOperator
+会调用传入的AsyncFunction的asyncInvoke()方法，这个方法与外部系统进行异步的交互。在异步操作完成后，asyncInvoke()方法会调用ResultFuture.complete()
+方法将结果返回(ResultFuture就是CompletableFuture的代理接口)，如果出现异常则会调用completeExceptionally()方法处理。从队列中移除未完成队列的元素，添
+加元素到已完成队列，然后将已完成队列中的元素通过TimestampedCollector发送出去。
+
+AsyncDataStream.orderedWait()/unorderedWait()的输出是需要考虑顺序性的，如果调用的是orderedWait()方法，则会创建OrderedStreamElementQueue队列，
+保持请求的顺序与输出结果的顺序一致，也就是先进先出；如果是采用unorderedWait()方法，则创建的是UnorderedStreamElementQueue队列，不保证顺序。如果使用
+的是处理时间则先返回的结果会先输出，而采用事件时间时，还是需要额外保证水印的边界不错乱。
+  * 有序是最简单的情况，只需要将元素按照到来的顺序放入OrderedStreamElementQueue，只有当队列中的队头请求异步操作返回了结果，才会触发输出，后面的请求先
+  返回也只能等待;
+
+  * 处理时间的无序也不太复杂，它是在UnorderedStreamElementQueue中维护两个子队列，一个是未完成请求的队列，一个是已完成请求的队列，所有请求都先进入
+  未完成请求的队列中并执行异步操作，并按照操作完成的顺序进到已完成队列中，再从已完成队列中拉取并输出结果即可;
+
+  * 事件时间的无序是比较复杂的一种情况，它允许两个水印之间的元素乱序，但是水印不能乱序，因此在使用两个队列的同时，未完成队列中还必须存储水印，这就是上面的
+  WatermarkQueueEntry的由来。在水印之间存储的也不再是单个StreamElementQueueEntry，而是它们的集合。只有当未完成队列中的队头集合中有元素的异步操作返回
+  时才能将其移动到已完成队列里面。这样就可以保证在通过某个水印之前，它前面的所有异步请求都完成。
+
+异步I/O的检查点实现比较简单，由于StreamElementQueue保存的就是尚未完成异步请求的元素，以及已完成异步请求但还没有发送的元素，只要遍历该队列，并将它们都放入
+状态后端就算完成。
+
+好啦，终于以Flink中的异步IO为例讲完了AIO的实例！
+
+额外说一下，实际工作中由于Linux中的AIO并不完善，所以在Linux下的IO模型更多的是以NIO为主。比如常见的使用IO多路复用技术结合线程池来实现的高并发，这也是常说
+的Reactor，如我们工作中经常遇到的Redis(单Reactor单进程模式)、Nginx(单Reactor多进程)、Netty(多Reactor多线程模式)等。C语言编写的系统更喜欢使用进程模
+式(单Reactor下更是如此)，而Java及其它的JVM语言更喜欢使用线程模式，因为JVM本身就是一个进程，JVM中有很多线程，业务线程只是其中的一个而已。
