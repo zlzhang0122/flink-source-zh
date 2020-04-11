@@ -1,0 +1,12 @@
+### 大state优化
+
+我们知道Flink目前主要支持三种StateBackend，分别是MemoryStateBackend、RocksDBStateBackend和FsStateBackend，由于MemoryStateBackend受限
+于本地机器的内存且其checkpoint受限于JobManager的内存，所以在实际的生产环境基本上不会使用，而FsStateBackend在大state时保存会非常慢且耗时，所以
+当状态较大时目前只有RocksDBStateBackend能够选择，一方面其使用RocksDB在内存中保存state比较快速，另一方面支持增量checkpoint也能较快的进行快照。
+
+但是RocksDB是基于LSM树原理实现的KV数据库，如果听说过LSM树就应该知道它存在读放大问题(没听过也没关系，简单点说就是在进行读取时需要从新数据到老数据
+不断进行查找，直到找到所需数据)，当然它会在后台对数据进行合并和压缩以减少读放大问题，但这就同时导致产生了写放大问题。不管是读放大问题，还是写放大问
+题，都导致其对磁盘的性能要求非常之高，所以通常在生产环境中都会使用SSD硬盘作为RocksDB的存储介质，否则在频繁访问状态时，磁盘的I/O就可能成为性能瓶颈。
+
+如果我们确实没有办法更换SSD的硬盘，又该如何解决这个瓶颈呢？
+
