@@ -25,4 +25,6 @@ SourceFunction有一些其他实现，如：ParallelSourceFunction表示该Sourc
 只有一个invoke()方法，对收集来的每条数据都会用它来进行处理。SinkFunction也有对应的上下文对象Context，可以从中获得当前处理时间、当前水印和时间
 戳，而且它也有衍生出来的RichSinkFunction函数版本。Flink内部提供了一个最简单的实现DiscardingSink。顾名思义，它就是将所有汇集的数据全部丢弃。
 
-
+我们在[Flink源码阅读6：两阶段提交](./2pc.md)中提到Flink中通过基于checkpoint提供的hook来实现的两阶段提交模式保证了Sink端的Exactly once，但这
+种保证需要第三方写组件的支持，所以目前对于外部Exactly once的写支持只提供了两种Sink，分别是KafkaSink和HdfsSink，它们主要应用在实时数仓、topic拆
+分、基于时间的分析处理等领域。
