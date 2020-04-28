@@ -12,3 +12,4 @@
 
 Flink没有继续使用Disruptor这种数据结构，但是其背压的实现依然还是有点类似。具体来讲，Flink中每一个Task都会有一个InputGate和ResultPartition，而这
 两个组件都会有一个对应的LocalBufferPool(缓冲池)，LocalBufferPool中会有一定量的Buffer(其实就是Flink内存管理的单位MemorySegment)。
+
