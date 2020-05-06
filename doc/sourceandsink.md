@@ -17,6 +17,9 @@ SourceFunction中还在内部嵌套定义了SourceContext接口，它表示这�
 
   * emitWatermark()：发射一个水印，仅对于事件时间有效。一个带有时间戳t的水印表示不会有任何t'<=t的事件再发生，如果真的发生，会被当做迟到事件忽略掉;
 
+  * markAsTemporarilyIdle()：用于通知系统当前的source会暂停发射数据一段时间，它只有在摄入时间和事件事件才会生效，允许下游算子在source空闲时提前
+  他们的水位从而提前触发计算(这个功能对于那些数据流比较稀疏的场景下还是比较有用);
+
 SourceFunction有一些其他实现，如：ParallelSourceFunction表示该Source可以按照设置的并行度并发执行；RichSourceFunction是继承自RichFunction，
 表示该Source可以感知到运行时上下文(RuntimeContext，如Task、State及并行度的信息)，以及可以自定义初始化和销毁逻辑(通过open/close方法)。RichParallelSourceFunction
 则表示的是以上两者的结合。
