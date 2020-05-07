@@ -13,6 +13,6 @@
 Flink没有继续使用Disruptor这种数据结构，但是其背压的实现依然还是有点类似。具体来讲，Flink中每一个Task都会有一个InputGate和ResultPartition，而这
 两个组件都会有一个对应的LocalBufferPool(缓冲池)，LocalBufferPool中会有一定量的Buffer(其实就是Flink内存管理的单位MemorySegment的包装类)。当缓冲
 池中已申请的数量达到了上限或没有内存块时，Task就会暂停读取Netty Channel，因此上游发送端就会立即响应停止发送并进入背压状态，于是上游的写入也会停止，从
-而将背压逐级向上传递。
+而将背压逐级向上传递。这就是Flink基于TCP的反压实现的主要思路。
 
 以上是一些理论上的讲解，概念上的阐述，主要作用是帮助分析，但是我们知道"talk is cheap"，所以还是来从源码上进行分析会来的更清楚。
