@@ -26,7 +26,7 @@
 
 * [Flink源码阅读13：Source和Sink](../master/doc/sourceandsink.md)
 
-* [Flink源码阅读14：内存管理模型](../master/doc/memory.md)
+* [Flink源码阅读14：内存模型](../master/doc/memory.md)
 
 
 ### 扩展阅读
