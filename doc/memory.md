@@ -1,7 +1,7 @@
 ### 内存管理
 
 先来看一下Flink中TaskManager的内存布局：
-![TaskManager内存布局](../images/memorymanage.jpg "TaskManager内存布局")
+![TaskManager内存布局](../images/memorymanage.png "TaskManager内存布局")
 
 Flink为了减少对象存储开销，会先将对象进行序列化后再进行存储，序列化存储的最小单位是MemorySegment，底层的实现是数组，大小由taskmanager.memory.segment-size
 配置项指定，默认32KB。下面分别进行介绍：
@@ -20,6 +20,6 @@ YARN部署的per job集群的启动调用的是YarnClusterDescriptor.deployJobCl
 
 以上是Flink1.10版本之前的内存管理方案，其实际上的配置比较复杂，有很多隐藏的细节需要注意，并且对于批处理作业和流处理作业分别有一套不同的配置方法，因此社区一直在探究
 并提出了一套新的统一的内存模型和配置，并在Flink 1.10版本中进行了发布。下面就让我们来分析下吧，先来看下新的内存布局：
-![新版TaskManager内存布局](../images/memorynew.jpg "新版TaskManager内存布局")
+![新版TaskManager内存布局](../images/memorynew.png "新版TaskManager内存布局")
 
 由上图可以看出，与老版本的内存模型还是有很大的区别的，下面分别进行介绍：
