@@ -23,3 +23,16 @@ YARN部署的per job集群的启动调用的是YarnClusterDescriptor.deployJobCl
 ![新版TaskManager内存布局](../images/memorynew.png "新版TaskManager内存布局")
 
 由上图可以看出，与老版本的内存模型还是有很大的区别的，下面分别进行介绍：
+  * Flink总内存：TM所占用的所有与Flink相关的内存，包括位于堆内和堆外的Flink框架内存、位于堆外的托管内存、位于堆外的网络缓存、位于堆内和堆外的任务内存，由参数
+  taskmanager.memory.flink.size设置，需要用户指定;
+
+  * Flink框架内存：位于堆内和堆外，它是Flink运行时占用的内存，一般不需要调整，由参数taskmanager.memory.framework.heap.size控制堆内部分的大小，参数
+  taskmanager.memory.framework.off-heap.size控制堆外部分的大小，它们的默认值都是128MB;
+
+  * 托管内存：仅位于堆外，由MemoryManager进行管理，主要用于缓存中间数据和RocksDB状态后端的数据存储，既可以通过参数taskmanager.memory.managed.fraction
+  控制其占Flink总内存的比例来控制其大小(默认0.4)，也可以直接通过参数taskmanager.memory.managed.size直接指定其大小;
+
+  * 网络缓存：仅位于堆外，主要用于TM之间及与外部组件的数据交换，可以通过参数taskmanager.memory.network.fraction控制其占Flink总内存的大小比例，还可以通过参数taskmanager.memory.network.min
+  和taskmanager.memory.network.max控制其大小上下限，以免分配得过多或过少;
+
+  * 任务内存：位于堆外和堆外，被用户代码和自定义数据结构所使用，堆内部分通过参数taskmanager.memory.task.heap.size设置，堆外部分通过参数taskmanager.memory.task.off-heap.size设置;
