@@ -24,7 +24,7 @@ YARN部署的per job集群的启动调用的是YarnClusterDescriptor.deployJobCl
 
 由上图可以看出，与老版本的内存模型还是有很大的区别的，下面分别进行介绍：
   * Flink总内存：TM所占用的所有与Flink相关的内存，包括位于堆内和堆外的Flink框架内存、位于堆外的托管内存、位于堆外的网络缓存、位于堆内和堆外的任务内存，由参数
-  taskmanager.memory.flink.size设置，需要用户指定;
+  taskmanager.memory.flink.size设置;
 
   * Flink框架内存：位于堆内和堆外，它是Flink运行时占用的内存，一般不需要调整，由参数taskmanager.memory.framework.heap.size控制堆内部分的大小，参数
   taskmanager.memory.framework.off-heap.size控制堆外部分的大小，它们的默认值都是128MB;
@@ -36,3 +36,10 @@ YARN部署的per job集群的启动调用的是YarnClusterDescriptor.deployJobCl
   和taskmanager.memory.network.max控制其大小上下限，以免分配得过多或过少;
 
   * 任务内存：位于堆外和堆外，被用户代码和自定义数据结构所使用，堆内部分通过参数taskmanager.memory.task.heap.size设置，堆外部分通过参数taskmanager.memory.task.off-heap.size设置;
+
+  * TaskManager总内存：它是Flink总内存、JVM元空间与JVM额外内存大小之和，也就是容器本身的内存大小，由参数taskmanager.memory.process.size设置;
+
+  * JVM元空间：也就是JDK1.8以前的HotSpot JVM的方法区，或者叫做永久代，由参数taskmanager.memory.jvm-metaspace.size设置;
+
+  * JVM额外开销：预留的其他本地内存，主要用于线程栈、代码缓存等，避免出现异常;
+
