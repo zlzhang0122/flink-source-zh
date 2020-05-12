@@ -43,7 +43,7 @@ YARN部署的per job集群的启动调用的是YarnClusterDescriptor.deployJobCl
 
   * JVM额外开销：预留的其他本地内存，主要用于线程栈、代码缓存等，避免出现异常;
 
-虽然经过了FLink 1.10版本的优化，看上去还是有一大堆参数需要设置啊，完全记不住怎么办？没关系，其实要设置的很少。一般来说，如果部署方式是Standalone，就需要通过参数
+虽然经过了Flink 1.10版本的优化，看上去还是有一大堆参数需要设置啊，完全记不住怎么办？没关系，其实要设置的很少。一般来说，如果部署方式是Standalone，就需要通过参数
 taskmanager.memory.flink.size指定Flink的总内存，如果是k8s或是yarn模式部署，就需要通过参数taskmanager.memory.process.size指定TM进程的总内存。如果需要对参
 数进行调优，可以考虑先通过参数taskmanager.memory.network.fraction指定网络缓存的占比大小，然后通过参数taskmanager.memory.managed.fraction指定托管内存占比
 大小，其余的参数都可以不设置。否则，硬性设置全部的参数容易出现考虑不周引发配额被抢占引起运行失败等异常情况！

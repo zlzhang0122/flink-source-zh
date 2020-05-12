@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3698c706-6cbf-4c64-963f-9b5199f831dd" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/doc/memory.md" afterPath="$PROJECT_DIR$/doc/memory.md" />
-    </list>
+    <list default="true" id="3698c706-6cbf-4c64-963f-9b5199f831dd" name="Default" comment="" />
     <ignored path="flink-source-zh.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -87,8 +85,8 @@
           </provider>
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="FIRST">
-              <first_editor relative-caret-position="459">
-                <caret line="48" column="26" selection-start-line="48" selection-start-column="26" selection-end-line="48" selection-end-column="26" />
+              <first_editor relative-caret-position="129">
+                <caret line="26" column="34" selection-start-line="26" selection-start-column="34" selection-end-line="26" selection-end-column="34" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -807,12 +805,12 @@
       <workItem from="1587363570096" duration="1459000" />
       <workItem from="1587565084020" duration="214000" />
       <workItem from="1587565891115" duration="16386000" />
-      <workItem from="1589032587453" duration="7925000" />
+      <workItem from="1589032587453" duration="8096000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="217875000" />
+    <option name="totallyTimeSpent" value="218046000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="709" extended-state="0" />
@@ -1555,8 +1553,8 @@
       </provider>
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="FIRST">
-          <first_editor relative-caret-position="459">
-            <caret line="48" column="26" selection-start-line="48" selection-start-column="26" selection-end-line="48" selection-end-column="26" />
+          <first_editor relative-caret-position="129">
+            <caret line="26" column="34" selection-start-line="26" selection-start-column="34" selection-end-line="26" selection-end-column="34" />
             <folding />
           </first_editor>
           <second_editor />
