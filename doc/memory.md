@@ -45,6 +45,9 @@ YARN部署的per job集群的启动调用的是YarnClusterDescriptor.deployJobCl
 
   * JVM额外开销：预留的其他本地内存，主要用于线程栈、代码缓存等，避免出现异常;
 
+相比于老版本的内存管理，新版使用位于堆外的托管内存来管理RocksDB状态后端，并使用MemoryManager进行分配管理，有效的避免了State过大引起的频繁GC影响吞吐的问题，并且
+还解决了托管内存只覆盖DataSet API，而DataStream API则主要使用JVM的堆内存，两者的管理方式不一致导致流式场景下需要更多的调优参数且内存消耗更难把控的问题。
+
 虽然经过了Flink 1.10版本的优化，看上去还是有一大堆参数需要设置啊，完全记不住怎么办？没关系，其实要设置的很少。一般来说，如果部署方式是Standalone，就需要通过参数
 taskmanager.memory.flink.size指定Flink的总内存，如果是k8s或是yarn、Mesos模式部署，就需要通过参数taskmanager.memory.process.size指定TM进程的总内存。如果
 需要对参数进行调优，可以考虑先通过参数taskmanager.memory.network.fraction指定网络缓存的占比大小，然后通过参数taskmanager.memory.managed.fraction指定托管
