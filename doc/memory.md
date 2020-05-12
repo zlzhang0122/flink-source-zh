@@ -1,5 +1,7 @@
 ### 内存管理
 
+TaskManager作为Master/Slave架构中的Slave，为Flink任务的执行提供了所需的环境和资源，其非常重要且极为复杂，因此Flink的内存管理也主要是指TaskManager的内存管理。
+
 先来看一下Flink中TaskManager的内存布局：
 ![TaskManager内存布局](../images/memorymanage.png "TaskManager内存布局")
 
