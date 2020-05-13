@@ -2,7 +2,9 @@
 
 背压是使用流处理系统中经常会面对的问题之一(之所以说是之一，是因为我觉得数据倾斜也时常遇到^-^)，背压的场景非常之多，比如在京东或淘宝的618、双十一
 购物节中，当时钟指向0点时，大量的用户开始将喜欢的商品加入购物车并进行结算，此时系统的流量将是平时流量的几倍甚至是十几倍，在这段时间内系统接收到的
-数据将远高于其所能处理的数据量，这就是通常所说的"背压"。如果背压不能得到有效的处理，将会耗尽系统资源甚至导致系统崩溃。
+数据将远高于其所能处理的数据量，这就是通常所说的"背压"。如果背压不能得到有效的处理，将会耗尽系统资源甚至导致系统崩溃。当然，如果对延迟的要求不太高或
+是数据量比较小，背压的影响可能不是那么明显，但是对于大数据量的Flink任务来说，背压会严重影响其checkpoint的时长甚至导致快照失败，从而产生稳定性问题，
+而这对于生产环境是十分危险的。
 
 我们知道目前主要的流处理引擎其实都提供了背压功能，但是具体到每个引擎其实现背压的方式却各不相同。新版的Storm采用的是引入高性能无锁缓冲队列Disruptor，
 当这个队列已满时则停止发送数据，最终将背压一级级的向上传导直到Spout，于是Spout停止从kafka拉取数据。当Disruptor缓冲队列不再满时，Spout重新从kafka
@@ -28,6 +30,6 @@ Socket进行传输，此时候如果单个Task产生背压，则会导致复用�
 以上是一些理论上的讲解，概念上的阐述，主要作用是帮助分析，我们都知道"talk is cheap"，所以还是来从源码上进行分析会来的更清楚。
 
 CreditBasedSequenceNumberingViewReader是一个简单的ResultSubpartitionView的简单包装类，其中的属性numCreditsAvailable维护了下游消费端(也就是
-InputChannel)的用于存放数据的可用buffer的数量，它表示了下游还可以接收credits个buffer的数据。每次向下游发送数据时都会调用getNextBuffer()来获取待
-发送的数据，此时会对numCreditsAvailable的值自减。一旦credits的值变为0时即抛出IllegalStateException没有可用的credit异常，于是停止发送。当下游
-InputChannel中的数据被消费后空闲出内存再通过notifyCreditAvailable通知上游重新开始发送。
+下游InputChannel)的用于存放数据的可用buffer的数量，它表示了下游还可以接收credits个buffer的数据。每次向下游发送数据时都会调用getNextBuffer()来获
+取待发送的数据，此时会对numCreditsAvailable的值自减。一旦credits的值变为0时即抛出IllegalStateException没有可用的credit异常，于是停止发送。当下
+游InputChannel中的数据被消费后空闲出内存再通过notifyCreditAvailable通知上游重新开始发送。
