@@ -41,7 +41,9 @@ Trigger定义了何时开始对窗口进行计算，每个窗口都有一个默�
   目前到来的元素，比较结果为一个double类型阈值。如果阈值超过DeltaTrigger配置的阈值，则触发计算;
 
 
-Evictor同样是作用于窗口，它的作用是在Flink进行计算之前移除元素，我们可以利用它将一些满足要求或异常的数据在窗口计算之前或计算之后从窗口中剔除
+Evictor同样是作用于窗口，它的作用是在Flink进行计算之前移除元素。Flink中每个window中的数据可以理解为以key-value对的形式存储在HeapListState
+中的CopyOnWriteStateTable中。key为window对象本身，value为该window中的数据。window的合并运算是将window进行并集运算，同时合并value集合中
+的数据，合并之后的window所含数据很可能存在2小时之前的数据，此时就以利用Evictor将一些不满足要求或异常的数据在窗口计算之前或计算之后从窗口中剔除
 出去。其中主要有两个重要方法：
   * evictBefore()：计算操作执行之前执行evict操作，被剔除的元素不会参与计算;
 
