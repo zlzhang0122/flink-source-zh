@@ -40,5 +40,16 @@ CreditBasedSequenceNumberingViewReader是一个简单的ResultSubpartitionView�
 在回收内存方法recycle()，监听器发现有缓存可用方法notifyBufferAvailable()，分配积压任务所需内存方法onSenderBacklog()时调用。通过追溯源码，我们发现
 notifyCreditAvailable()方法最终调用了CreditBasedPartitionRequestClientHandler类的notifyCreditAvailable()方法，这个方法最终是通过EventExecutor
 发送出去了一个UserEvent。CreditBasedPartitionRequestClientHandler类的userEventTriggered()方法会得到响应，在userEventTriggered()这个方法中，
-会调用writeAndFlushNextMessageIfPossible()方法尝试对队列中的每一个Input Channel写入还没有上报的可用credits数量并刷新。
+会调用writeAndFlushNextMessageIfPossible()方法尝试对队列中的每一个Input Channel写入还没有上报的可用credits数量并刷新，上报信息会被封装为AddCredit
+的Netty消息，并被PartitionRequestServerHandler的channelRead0()方法读取到，在其中判断消息类型如果是AddCredit类型，则将其放入PartitionRequestQueue
+中，在其中的addCredit()方法中会根据receiverId获取NetworkSequenceViewReader，并调用它的addCredit()方法，由于NetworkSequenceViewReader就是上游的
+CreditBasedSequenceNumberingViewReader，因此会直接调用其addCredit()方法将ResultSubpartitionView的可用credits增加，在增加了可用credits数量后，还
+会调用enqueueAvailableReader()方法将reader加入到可用reader列表中，如果可用reader列表之前为空，还需要将reader对应的ResultSubpartitionView的buffer
+发送到下游，在其中会调用getNextBuffer()方法，它会将numCreditsAvailable减一之后判断是否还有可用的credit，如果没有则抛出IllegalStateException异常。
+
+CreditBasedPartitionRequestClientHandler类的writeAndFlushNextMessageIfPossible()方法会调用RemoteInputChannel类的getAndResetUnannouncedCredit()
+方法获取到未上报的credits数即属性unannouncedCredit并将其值清零。
+
+整个Flink基于Credit的背压机制分析到这里也就差不多了，其实现原理经过我们的分析之后其实相当的简单，抽象一下其实就是一个分布式环境下的生产者消费者模型，其核心
+就是credit的上报和通知。
 
