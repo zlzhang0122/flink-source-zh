@@ -3,3 +3,9 @@
 Window可以理解为Flink中流数据的一种分组方式，它其中只定义了一个方法maxTimestamp()，表示该window时间跨度所能包含的最大时间点(用时间戳表示)。
 Window类有两个子类，分别是GlobalWindow和TimeWindow。前者是全局窗口，该窗口通过单例模式保证其只存在一个实例。而后者则是定义了明确起止时间的
 时间窗口，它其中还定义了一些Window的计算方法，比如判断是否有交集，求并集等的方法。
+
+如果对一个流进行window操作，流中的元素会以它们的key(由keyBy函数指定)和它们所属的window进行分组，位于相同key和相同窗口的一组元素称之为窗格。
+在Flink中，window和window中的数据以key-value对的形式存放(形成windowState，它以HeapListState的方式储存，在WindowOperator中定义)。
+每次Flink接收到一个元素，都会通过一个特定的方法获取到包含该元素的window集合(也就是assignWindows方法)，并将该元素加入到状态表中。WindowAssigner
+的主要作用之一就是通过assignWindows()方法规定应该如何根据一个元素来确定它所属的窗口集合。此外，它还包含窗口的触发机制(也就是应该何时计算窗口内的
+元素)、窗口的序列化器和是否EventTime时间类型。
