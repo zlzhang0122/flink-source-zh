@@ -1,4 +1,5 @@
 ### 窗口Window
 
-Window可以理解为Flink中流数据的一种分组方式，它其中只定义了一个方法maxTimestamp()，其意义为该window时间跨度所能包含的最大时间点(用时间戳表示)。
-Window类有两个子类，分别是GlobalWindow和TimeWindow，前者是全局窗口，而后者是具有起止时间的时间窗口。
+Window可以理解为Flink中流数据的一种分组方式，它其中只定义了一个方法maxTimestamp()，表示该window时间跨度所能包含的最大时间点(用时间戳表示)。
+Window类有两个子类，分别是GlobalWindow和TimeWindow。前者是全局窗口，该窗口通过单例模式保证其只存在一个实例。而后者则是定义了明确起止时间的
+时间窗口，它其中还定义了一些Window的计算方法，比如判断是否有交集，求并集等的方法。
