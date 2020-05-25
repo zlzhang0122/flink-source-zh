@@ -10,4 +10,5 @@ Window类有两个子类，分别是GlobalWindow和TimeWindow。前者是全局�
 的主要作用之一就是通过assignWindows()方法规定应该如何根据一个元素来确定它所属的窗口集合。此外，它还包含窗口的触发机制(也就是应该何时计算窗口内的
 元素)、窗口的序列化器和是否EventTime时间类型。
 
-WindowAssigner类是一个抽象类，其中定义的方法都没有具体的实现，而GlobalWindows是其的一个子类，该类用于将所有的元素分配给同一个GlobalWindow。
+WindowAssigner类是一个抽象类，其中定义的方法在其中都没有具体的实现，而GlobalWindows是其的一个子类，该类用于将所有的元素分配给同一个GlobalWindow。
+它的应用场景之一是为CountWindow分配元素，即每累计n个元素触发一次计算。
