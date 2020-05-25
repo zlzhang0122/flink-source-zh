@@ -6,9 +6,19 @@ Window类有两个子类，分别是GlobalWindow和TimeWindow。前者是全局�
 
 如果对一个流进行window操作，流中的元素会以它们的key(由keyBy函数指定)和它们所属的window进行分组，位于相同key和相同窗口的一组元素称之为窗格。
 在Flink中，window和window中的数据以key-value对的形式存放(形成windowState，它以HeapListState的方式储存，在WindowOperator中定义)。
-每次Flink接收到一个元素，都会通过一个特定的方法获取到包含该元素的window集合(也就是assignWindows方法)，并将该元素加入到状态表中。WindowAssigner
+每次Flink接收到一个元素，都会通过一个特定的方法获取到该元素应该属于的window集合(也就是assignWindows方法)，并将该元素加入到状态表中。WindowAssigner
 的主要作用之一就是通过assignWindows()方法规定应该如何根据一个元素来确定它所属的窗口集合。此外，它还包含窗口的触发机制(也就是应该何时计算窗口内的
 元素)、窗口的序列化器和是否EventTime时间类型。
 
 WindowAssigner类是一个抽象类，其中定义的方法在其中都没有具体的实现，而GlobalWindows是其的一个子类，该类用于将所有的元素分配给同一个GlobalWindow。
-它的应用场景之一是为CountWindow分配元素，即每累计n个元素触发一次计算。
+它的应用场景之一是为CountWindow分配元素，即每累计n个元素触发一次计算。除了GlobalWindows，还有三类主要窗口，它们在实际的生产场景中用的非常之多，
+分别是滚动窗口、滑动窗口和Session窗口，它们针对ProcessingTime和EventTime都有其对应的实现。
+
+TumblingEventTimeWindows是基于事件时间的滚动窗口，其具有两个属性，分别是窗口的大小和偏移量(这个偏移主要用于控制窗口的起始时间)，相邻窗口之间
+没有重叠，一个元素一定会也只可能属于一个窗口。而SlidingEventTimeWindows是基于事件时间的滑动窗口，其具有三个属性，分别是窗口大小、窗口每次滑动的
+距离以及窗口的偏移量。在滑动窗口的场景下，一个元素可以属于多个窗口(只要窗口滑动的距离小于窗口的大小)，也可以不属于任何窗口(只要窗口滑动的距离大于窗
+口的大小)。
+
+MergingWindowAssigner扩展了WindowAssigner，它能对窗口进行合并。在所有SessionWindow的实现中，都会扩展MergingWindowAssigner类并对mergeWindows()
+方法进行了实现，以支持对窗口的合并操作。
+
