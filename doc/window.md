@@ -20,5 +20,5 @@ TumblingEventTimeWindows是基于事件时间的滚动窗口，其具有两个�
 口的大小)。
 
 MergingWindowAssigner扩展了WindowAssigner，它能对窗口进行合并。在所有SessionWindow的实现中，都会扩展MergingWindowAssigner类并对mergeWindows()
-方法进行了实现，以支持对窗口的合并操作。
+方法进行实现，以支持对窗口的合并操作。
 
