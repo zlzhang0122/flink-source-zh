@@ -14,6 +14,9 @@ WindowAssigner类是一个抽象类，其中定义的方法在其中都没有具
 它的应用场景之一是为CountWindow分配元素，即每累计n个元素触发一次计算。除了GlobalWindows，还有三类主要窗口，它们在实际的生产场景中用的非常之多，
 分别是滚动窗口、滑动窗口和Session窗口，它们针对ProcessingTime和EventTime都有其对应的实现。
 
+GlobalWindows是GlobalWindow的分配器，它负责为元素分配所属的Window(也就是GlobalWindow)。它的一个典型的应用场景是CountWindow，即每累计够n个
+元素就触发计算的窗口。
+
 TumblingEventTimeWindows是基于事件时间的滚动窗口，其具有两个属性，分别是窗口的大小和偏移量(这个偏移主要用于控制窗口的起始时间)，相邻窗口之间
 没有重叠，一个元素一定会也只可能会属于一个窗口。而SlidingEventTimeWindows是基于事件时间的滑动窗口，其具有三个属性，分别是窗口大小、窗口每次滑动的
 距离以及窗口的偏移量。在滑动窗口的场景下，一个元素可以属于多个窗口(只要窗口滑动的距离小于窗口的大小)，也可以不属于任何窗口(只要窗口滑动的距离大于窗
