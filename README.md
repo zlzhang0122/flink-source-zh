@@ -38,3 +38,5 @@
 * [Flink扩展阅读2：分布式系统中的CAP和BASE理论](../master/doc/capandbase.md)
 
 * [Flink扩展阅读3：分布式共识算法Raft](../master/doc/raft.md)
+
+* [Flink扩展阅读4：数据去重](../master/doc/datadeduplication.md)
