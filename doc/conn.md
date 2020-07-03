@@ -7,3 +7,7 @@
 控。NoTimestampContext的CountingOutput封装的output的真正类型是RecordWriterOutput类型，其collect()方法会直接过滤
 掉输出到其它旁路input的数据，而对于输出到非旁路input的数据则直接使用pushToRecordWriter()方法进行序列化代理，并将数据传递
 给recordWriter。
+RecordWriter会对数据进行序列化，然后写到缓存中，它是一个接口，有两个定义为final的实现类：
+* BroadcastRecordWriter：主要用于广播模式下，维护了多个下游channel，在发送时会将数据发往下游所有的channel中；
+* ChannelSelectorRecordWriter：它是一个通用的面向记录的运行时结果输出器，通过channelSelector对象来判断需要将数据发往
+下游哪个channel中。keyby算子中就用到了这种RecordWriter。
