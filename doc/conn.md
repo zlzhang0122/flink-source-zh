@@ -13,5 +13,5 @@ RecordWriter会对数据进行序列化，然后写到缓存中，它是一个�
 * ChannelSelectorRecordWriter：它是一个通用的面向记录的运行时结果输出器，通过channelSelector对象来判断需要将数据发往
 下游哪个channel中。keyby算子中就用到了这种RecordWriter。
 
-以ChannelSelectorRecordWriter类为例进行分析，在其emit()方法中，其调用了父类RecordWriter的方法。传入了两个参数分别是消
-息和调用channelSelector.selectChannel()方法根据消息和下游channel的对应关系得到的目标channel的编号。
+以ChannelSelectorRecordWriter类为例进行分析，在其emit()方法中，其调用了父类RecordWriter的方法。传入了两个参数，分别是
+需要发送的消息和调用channelSelector.selectChannel()方法根据消息和下游channel的对应关系得到的目标channel的编号。
