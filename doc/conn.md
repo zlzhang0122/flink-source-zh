@@ -15,3 +15,6 @@ RecordWriter会对数据进行序列化，然后写到缓存中，它是一个�
 
 以ChannelSelectorRecordWriter类为例进行分析，在其emit()方法中，其调用了父类RecordWriter的方法。传入了两个参数，分别是
 需要发送的消息和调用channelSelector.selectChannel()方法根据消息和下游channel的对应关系得到的目标channel的编号。
+
+在父类RecordWriter的emit()方法中首先使用序列化器将消息序列化，然后调用copyFromSerializerToTargetChannel()方法从序列化
+器中复制数据到目标channel，深入的来分析下这个方法：
