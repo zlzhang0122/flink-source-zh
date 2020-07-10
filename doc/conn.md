@@ -56,4 +56,5 @@ BoundedBlockingSubpartition类适用于批处理场景下的数据消费，写�
 LocalInputChannel负责从本地请求一个subPartition view，而CreditBasedSequenceNumberingViewReader则是一个用于支持基于credit反压的
 网络场景下的subpartition view的简单封装。查看其requestSubpartitionView()方法发现其非常简单，就是单纯的创建了一个subpartitionView。
 继续往上追踪，来到了PartitionRequestServerHandler类的channelRead0方法(emmmm...看到这个是不是有些熟悉？是的，在基于credit的背压机制
-中也遇到了它)。
+中也遇到了它)。它在上游发送端执行，根据接收到消息的类型，作出相应的响应，如果接收到的消息类型是PartitionRequest，就会创建一个CreditBasedSequenceNumberingViewReader
+类的实例，并调用其requestSubpartitionView()方法创建对应的subPartitionView，并将reader加入到outboundQueue中。
