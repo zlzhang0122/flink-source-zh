@@ -44,3 +44,16 @@ BoundedBlockingSubpartition类适用于批处理场景下的数据消费，写�
 写入，多次消费。BoundedData是个接口，它有三个实现类，分别对应着不同的数据存放方式，包括保存在文件系统的FileChannelBoundedData、保存
 在内存的MemoryMappedBoundedData和同时保存在文件系统及内存的FileChannelMemoryMappedBoundedData。
 
+前述说过数据的消费是通过ResultSubPartition调用createReadView()方法，在实现类之一的PipelinedSubpartition类中，其首先用buffers
+作为同步对象进行同步确保该同步块同一时间只有一个线程能够访问以保证线程安全，确保不会重复创建read view。然后判断subpartition还没有被释
+放，并且该subpartition的read view为空以确保数据还没有被消费。如果判断通过，则创建read view，并判断是否有数据需要消费，如果是则通知
+下游消费者进行消费。ResultPartitionManager负责维护当前已经创建和消费的分区，在其createSubpartitionView()方法中调用了createReadView()
+方法，这个方法非常简单，ResultPartition类在其setup()方法中会调用partitionManager类的registerResultPartition()方法将分区注册，
+其实就是将待注册的分区id和待注册的分区存放到registeredPartitions这个map中，然后在创建view时就能通过分区id从registeredPartitions
+中获取到对应的ResultPartition,并创建一个subpartition view。
+
+继续来往上追溯，发现LocalInputChannel和CreditBasedSequenceNumberingViewReader这两个类调用了createSubpartitionView()方法。
+LocalInputChannel负责从本地请求一个subPartition view，而CreditBasedSequenceNumberingViewReader则是一个用于支持基于credit反压的
+网络场景下的subpartition view的简单封装。查看其requestSubpartitionView()方法发现其非常简单，就是单纯的创建了一个subpartitionView。
+继续往上追踪，来到了PartitionRequestServerHandler类的channelRead0方法(emmmm...看到这个是不是有些熟悉？是的，在基于credit的背压机制
+中也遇到了它)。
