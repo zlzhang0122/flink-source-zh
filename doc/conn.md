@@ -29,6 +29,18 @@ RecordWriter会对数据进行序列化，然后写到缓存中，它是一个�
 flushAlways是否为true，若是则对目标channel的数据进行一次flush。
 
 以ChannelSelectorRecordWriter类为例来分析getBufferBuilder()的实现，在获取目标channel的bufferBuilder时，判断bufferBuilders
-数组对应targetChannel下标的BufferBuilder是否为空，如果不为空就直接返回，否则就调用requestNewBufferBuilder()申请新的BufferBuilder。
-在ChannelSelectorRecordWriter类的构造方法中，只是创建了bufferBuilders数组但并没有赋值，只有在第一次getBufferBuilder()时才会创建，
-因此它时懒加载的。
+数组对应targetChannel下标的BufferBuilder是否为空，如果不为空就直接返回，否则就调用requestNewBufferBuilder()申请新的buffer。
+在ChannelSelectorRecordWriter类的构造方法中，只是创建了bufferBuilders数组但并没有赋值，只有在第一次getBufferBuilder()时才会
+创建，因此它时懒加载的。再来看下requestNewBufferBuilder()方法的实现，首先进行必要的验证，只有targetChannel对应的buffer为空或数据
+已经写入完毕才能进行下面的逻辑。通过调用RecordWriter类的requestNewBufferBuilder()方法申请或是获取目标分区的bufferBuilder，然后
+创建BufferConsumer用于读取BufferBuilder写入的数据，并将其添加到对应下标的ResultSubpartition中，最后返回该BufferBuilder。
+
+ResultSubpartition是一个抽象类，它有两个具体的实现类，分别是PipelinedSubpartition和BoundedBlockingSubpartition。PipelinedSubpartition
+类用于流场景下的数据消费，其内部维护着该Subpartition的所有buffer。消费者可以通过调用createReadView()方法创建一个PipelinedSubpartitionView
+来消费数据，在创建时除了需要传递父Subpartition也就是调用的对象实例外，还需要传递一个BufferAvailabilityListener对象，用于当buffer中
+有数据时的回调，因此只要其中有数据就能及时通知下游进行消费，这也是其适用于流式数据处理场景的原因之一。
+
+BoundedBlockingSubpartition类适用于批处理场景下的数据消费，写入的数据存放在属性BoundedData中，采用的是先写入后消费的模式，支持一次
+写入，多次消费。BoundedData是个接口，它有三个实现类，分别对应着不同的数据存放方式，包括保存在文件系统的FileChannelBoundedData、保存
+在内存的MemoryMappedBoundedData和同时保存在文件系统及内存的FileChannelMemoryMappedBoundedData。
+
