@@ -1,12 +1,11 @@
 ### Flink数据通信
 
-从数据源开始分析数据通信的整个过程，SourceFunction接口中的SourceContext内部接口SourceContext的collect()方法用于发射
-数据，其实现类NonTimestampContext的collect()方法直接调用了output对象的collect方法，它是Output<StreamRecord<T>>类
-型，它的实际类型是CountingOutput类型，这是一个包装类型，是对Output的包装，并在此基础上增加了收集元素数量的numRecordsOut
-的Counter类型的监控变量，collect()方法中调用了numRecordsOut.inc()方法来对元素数量进行自增，从而实现了对收集元素数量的监
-控。NoTimestampContext的CountingOutput封装的output的真正类型是RecordWriterOutput类型，其collect()方法会直接过滤
-掉输出到其它旁路input的数据，而对于输出到非旁路input的数据则直接使用pushToRecordWriter()方法进行序列化代理，并将数据传递
-给recordWriter。
+从数据源开始分析数据通信的整个过程，SourceFunction接口中的内部接口SourceContext的collect()方法用于发射数据，其实现类
+NonTimestampContext的collect()方法直接调用了output对象的collect方法，它是Output<StreamRecord<T>>类型，它的实际
+类型是CountingOutput类型，这是一个包装类型，是对Output的包装，并在此基础上增加了收集元素数量的numRecordsOut的Counter
+类型的监控变量，collect()方法中调用了numRecordsOut.inc()方法来对元素数量进行自增，从而实现了对收集元素数量的监控。NoTimestampContext
+的CountingOutput封装的output的真正类型是RecordWriterOutput类型，其collect()方法会直接过滤掉输出到其它旁路input的数
+据，而对于输出到非旁路input的数据则直接使用pushToRecordWriter()方法进行序列化代理，并将数据传递给recordWriter。
 
 RecordWriter会对数据进行序列化，然后写到缓存中，它是一个接口，有两个定义为final的实现类：
 * BroadcastRecordWriter：主要用于广播模式下，维护了多个下游channel，在发送时会将数据发往下游所有的channel中；
@@ -31,7 +30,7 @@ flushAlways是否为true，若是则对目标channel的数据进行一次flush�
 以ChannelSelectorRecordWriter类为例来分析getBufferBuilder()的实现，在获取目标channel的bufferBuilder时，判断bufferBuilders
 数组对应targetChannel下标的BufferBuilder是否为空，如果不为空就直接返回，否则就调用requestNewBufferBuilder()申请新的buffer。
 在ChannelSelectorRecordWriter类的构造方法中，只是创建了bufferBuilders数组但并没有赋值，只有在第一次getBufferBuilder()时才会
-创建，因此它时懒加载的。再来看下requestNewBufferBuilder()方法的实现，首先进行必要的验证，只有targetChannel对应的buffer为空或数据
+创建，因此它是懒加载的。再来看下requestNewBufferBuilder()方法的实现，首先进行必要的验证，只有targetChannel对应的buffer为空或数据
 已经写入完毕才能进行下面的逻辑。通过调用RecordWriter类的requestNewBufferBuilder()方法申请或是获取目标分区的bufferBuilder，然后
 创建BufferConsumer用于读取BufferBuilder写入的数据，并将其添加到对应下标的ResultSubpartition中，最后返回该BufferBuilder。
 
@@ -58,3 +57,5 @@ LocalInputChannel负责从本地请求一个subPartition view，而CreditBasedSe
 继续往上追踪，来到了PartitionRequestServerHandler类的channelRead0方法(emmmm...看到这个是不是有些熟悉？是的，在基于credit的背压机制
 中也遇到了它)。它在上游发送端执行，根据接收到消息的类型，作出相应的响应，如果接收到的消息类型是PartitionRequest，就会创建一个CreditBasedSequenceNumberingViewReader
 类的实例，并调用其requestSubpartitionView()方法创建对应的subPartitionView，并将reader加入到outboundQueue中。
+
+outboundQueue是一个PartitionRequestQueue类的对象，就是由它来负责处理partition request。
