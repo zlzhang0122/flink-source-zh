@@ -62,4 +62,5 @@ outboundQueue是一个PartitionRequestQueue类的对象，就是由它来负责�
 中创建一个NetworkSequenceViewReader对象，然后给每个reader分配SubPartitionView(调用requestSubpartitionView)。最后调用notifyReaderCreated
 把reader加入到PartitionRequestQueue的allReaders中。PartitionRequestQueue监听下游channel是否可以写入，当下游channel可写时会调用
 channelWritabilityChanged()方法，它会直接调用writeAndFlushNextMessageIfPossible()方法，该方法的逻辑是：如果有致命异常或是channel
-不可写，就直接返回。否则就从allReaders中取出一个reader，如果取出的reader为空就直接返回，否则就从reader中获取buffer。
+不可写，就直接返回。否则就从allReaders中取出一个reader，如果取出的reader为空就直接返回，否则就从reader中获取buffer。如果buffer为空，并且
+buffer没有被释放，则跳过本次循环重新开始新的循环，否则获取异常信息并将异常信息组装并抛出。
