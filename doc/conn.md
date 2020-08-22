@@ -65,3 +65,5 @@ channelWritabilityChanged()方法，它会直接调用writeAndFlushNextMessageIf
 不可写，就直接返回。否则就从allReaders中取出一个reader，如果取出的reader为空就直接返回，否则就从reader中获取buffer。如果buffer为空，并且
 buffer没有被释放，则跳过本次循环重新开始新的循环，否则获取异常信息并将异常信息组装并抛出。否则，如果channel没有被从可用的读取队列中移除，则重新
 将其添加到队列中，如果它仍然可用，并将消息包装为BufferResponse类型，等待写入和清空数据完成后再继续处理下一个buffer。
+
+那么PartitionRequest是在哪里被发送的呢？这就要说到NettyPartitionRequestClient类的requestSubpartition方法了。
