@@ -41,4 +41,3 @@ consumer使用分区发现获取初始分区后，根据StartupMode来设置消�
 获取到的offset是否为空，如果不为空就从offset开始消费，否则就从最近的offset开始消费。
 
 再来看run()方法，其实现同样是在FlinkKafkaConsumerBase类中。
-   
