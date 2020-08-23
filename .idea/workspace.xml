@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3698c706-6cbf-4c64-963f-9b5199f831dd" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/doc/flinkkafkaconsumer.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/flinkkafkaconsumer.md" beforeDir="false" afterPath="$PROJECT_DIR$/doc/flinkkafkaconsumer.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,22 +35,22 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="js-jscs-nodeInterpreter" value="$USER_HOME$/.nvm/versions/node/v4.9.1/bin/node" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/images" />
     <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
-    <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../flink-sql-submit/pom.xml" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="js-jscs-nodeInterpreter" value="$USER_HOME$/.nvm/versions/node/v4.9.1/bin/node" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/images" />
+      <recent name="$PROJECT_DIR$/docs/image" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/images" />
       <recent name="$PROJECT_DIR$/doc" />
       <recent name="$PROJECT_DIR$/docs" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/images" />
-      <recent name="$PROJECT_DIR$/docs/image" />
     </key>
   </component>
   <component name="RunManager">
@@ -338,7 +338,7 @@
       <workItem from="1589901832500" duration="9159000" />
       <workItem from="1590648792224" duration="8205000" />
       <workItem from="1592295122483" duration="42663000" />
-      <workItem from="1597915132891" duration="4742000" />
+      <workItem from="1597915132891" duration="7183000" />
     </task>
     <servers />
   </component>
