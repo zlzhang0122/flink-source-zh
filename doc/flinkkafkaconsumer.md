@@ -20,9 +20,20 @@ open()方法的实现在FlinkKafkaConsumerBase类中，主要是FlinkKafkaConsum
 另一种是匹配topic名称的正则表达式topicPattern。partitionDiscoverer.open()方法打开了kafka分区发现，并初始化所有需要的kafka连接。
 
 初始化subscribedPartitionsToStartOffsets已订阅的分区列表，它被初始化为一个hashmap。
-partitionDiscoverer.discoverPartitions()方法用于获取所有fixedTopics和匹配topicPattern的Topic包含的所有分区信息。
+partitionDiscoverer.discoverPartitions()方法用于获取所有fixedTopics和匹配topicPattern的topic包含的所有分区信息。
 
 接下来的逻辑分为两个部分，如果consumer是从快照恢复的，则走快照恢复逻辑，否则走直接启动逻辑。
 先分析从快照恢复的逻辑，既然是从快照恢复的，那么restoredState肯定不为空，否则就会为空。如果restoredState中没有某个分区的状态，那么将直接从最早
-的位点开始消费。
+的位点开始消费(这个逻辑是写死的，一定要注意)。
+然后对subscribedPartitionsToStartOffsets赋值，它会过滤掉不归该task负责的kafka分区后，将剩余的分区和位点信息放入已订阅的分区列表。然后，判断
+是否需要依照分区发现配置的topic正则表达式过滤分区，如果是的话就会过滤掉topic名称不符合topicPattern的分区。
 
+如果consumer不是从快照恢复的，那么restoredState就会为空，consumer就会直接启动，会根据startupMode启动模式走不同的启动逻辑。它也是一个枚举类
+型，有五个枚举值：
+  * GROUP_OFFSETS：从保存在zookeeper或者是Kafka broker的对应消费者组提交的offset开始消费，这是默认的配置;
+  * EARLIEST：尽可能从最早的offset开始消费;
+  * LATEST：从最近的offset开始消费;
+  * TIMESTAMP：从用户提供的timestamp处开始消费;
+  * SPECIFIC_OFFSETS：从用户提供的offset处开始消费。
+
+   
