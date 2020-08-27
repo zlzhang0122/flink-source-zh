@@ -32,6 +32,8 @@
 
 * [Flink源码阅读16：Flink数据通信](../master/doc/conn.md)
 
+* [Flink源码阅读17：FlinkKafkaConsumer](../master/doc/flinkkafkaconsumer.md)
+
 
 ### 扩展阅读
 
