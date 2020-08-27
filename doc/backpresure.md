@@ -37,7 +37,7 @@ CreditBasedSequenceNumberingViewReader是一个简单的ResultSubpartitionView�
 下游RemoteInputChannel)的用于存放数据的可用buffer的数量，它表示了下游还可以接收credits个buffer的数据。每次向下游发送数据时都会调用getNextBuffer()
 来获取待发送的数据，此时会对numCreditsAvailable的值自减。一旦credits的值变为0时即抛出IllegalStateException没有可用的credit异常，于是停止发送。当下
 游RemoteInputChannel中的数据被消费后空闲出内存再通过notifyCreditAvailable通知上游重新开始发送，通知用的方法是notifyCreditAvailable()，这个方法会
-在回收内存方法recycle()，监听器发现有缓存可用方法notifyBufferAvailable()，分配积压任务所需内存方法onSenderBacklog()时调用。通过追溯源码，我们发现
+在回收内存方法recycle()、监听器发现有缓存可用方法notifyBufferAvailable()、分配积压任务所需内存方法onSenderBacklog()时调用。通过追溯源码，我们发现
 notifyCreditAvailable()方法最终调用了CreditBasedPartitionRequestClientHandler类的notifyCreditAvailable()方法，这个方法最终是通过EventExecutor
 发送出去了一个UserEvent。CreditBasedPartitionRequestClientHandler类的userEventTriggered()方法会得到响应，在userEventTriggered()这个方法中，
 会调用writeAndFlushNextMessageIfPossible()方法尝试对队列中的每一个Input Channel写入还没有上报的可用credits数量并刷新，上报信息会被封装为AddCredit
