@@ -1,0 +1,5 @@
+### State存储
+
+当使用MemoryStateBackend和FsStateBackend时，默认情况下会将状态数据保存到CopyOnWriteStateTable中，它是StateTable
+接口的一个实现，其中可以保存多个KeyGroup的状态，每个KeyGroup对应一个CopyOnWriteStateMap。
+
