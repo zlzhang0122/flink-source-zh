@@ -34,6 +34,8 @@
 
 * [Flink源码阅读17：FlinkKafkaConsumer](../master/doc/flinkkafkaconsumer.md)
 
+* [Flink源码阅读18：事件时间和水位线](../master/doc/eventtimeandwatermark.md)
+
 
 ### 扩展阅读
 
