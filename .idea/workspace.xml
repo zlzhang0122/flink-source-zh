@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3698c706-6cbf-4c64-963f-9b5199f831dd" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doc/conn.md" beforeDir="false" afterPath="$PROJECT_DIR$/doc/conn.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -342,7 +341,7 @@
       <workItem from="1598509477411" duration="1828000" />
       <workItem from="1598537405646" duration="175000" />
       <workItem from="1598598828624" duration="789000" />
-      <workItem from="1598681817876" duration="8664000" />
+      <workItem from="1598681817876" duration="10567000" />
     </task>
     <servers />
   </component>
@@ -366,6 +365,10 @@
       <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="405" y="89" key="RollbackChangesDialog/0.23.1280.709@0.23.1280.709" timestamp="1594001989353" />
+    <state x="305" y="56" width="670" height="676" key="search.everywhere.popup" timestamp="1598695886545">
+      <screen x="0" y="23" width="1280" height="709" />
+    </state>
+    <state x="305" y="56" width="670" height="676" key="search.everywhere.popup/0.23.1280.709@0.23.1280.709" timestamp="1598695886545" />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />

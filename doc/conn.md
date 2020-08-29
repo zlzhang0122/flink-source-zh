@@ -138,7 +138,10 @@ RemoteInputChannel的onEmptyBuffer()方法并返回。否则，请求一个空�
 请求方法。否则，抛出状态异常。如果是event呢？则会创建一个memSeg，其中的数据是event的内容，再将其包装进networkBuffer对象，通过onBuffer()方法
 交给RemoteInputChannel进行处理。最后，释放netty使用到的buffer。
 
-那么，decodeBufferOrEvent()方法又是在何处被调用的呢？
+那么，decodeBufferOrEvent()方法又是在何处被调用的呢？答案是在decodeMsg()方法中。在该方法中，它会先判断msg是否是NettyMessage.BufferResponse
+类，如果是则获取接收此buffer的input channel，如果channel为空则释放buffer，取消request，并返回。否则，调用decodeBufferOrEvent()方法。该方法
+中还有一些异常代码的处理。这个方法是在netty框架的channelRead()方法中调用，也就是说它从netty中读取数据，进行反序列化，申请buffer，并将数据存放到buffer
+中去，最终被task读取到，这就是整个数据的读取流程，至此已经分析完毕了。
 
 
 
