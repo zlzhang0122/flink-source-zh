@@ -132,5 +132,13 @@ bufferQueue中，如果此时可用buffer数与所需buffer数一致表示不再
 增加1个可用buffer之前为0，就需要通知上游，下游已经可以接收数据。
 
 那么问题来了，onBuffer()方法又是何时被调用的呢？答案是在CreditBasedPartitionRequestClientHandler类的decodeBufferOrEvent()方法中调用。
-这个方法负责处理接收到的数据，这里的数据的类型可能为buffer，也可能是event。
+这个方法负责处理接收到的数据，这里的数据的类型可能为buffer，也可能是event。具体的逻辑是，如果是buffer，且如果从netty接收到的字节数为0，则调用
+RemoteInputChannel的onEmptyBuffer()方法并返回。否则，请求一个空的buffer，如果请求成功，则将从netty中读取到的数据填充到buffer中，并根据
+是否压缩的配置控制是否进行压缩，然后调用inputChannel.onBuffer()方法进行处理。否则如果请求空buffer不成功，且inputChannel已经被释放，则取消
+请求方法。否则，抛出状态异常。如果是event呢？则会创建一个memSeg，其中的数据是event的内容，再将其包装进networkBuffer对象，通过onBuffer()方法
+交给RemoteInputChannel进行处理。最后，释放netty使用到的buffer。
+
+那么，decodeBufferOrEvent()方法又是在何处被调用的呢？
+
+
 
