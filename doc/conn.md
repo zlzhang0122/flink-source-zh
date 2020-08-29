@@ -82,7 +82,7 @@ SingleInputGate类的requestPartition()方法调用了上述方法，它首先�
 InputGate会读取ResultSubpartition的内容。
 
 那么数据究竟是怎么样被读取的呢？让我们再来分析下StreamTask的processInput()方法。它会调用inputProcessor的processInput()方法，该方法会返回
-一个状态，如果状态表示的是还有输入数据且recordWriter依然可用，则返回，如果表示的是输入结束，则会将mailboxLoopRunning设置为false，并停止运行。
+一个状态，如果状态表示的是表示还有输入数据且recordWriter依然可用，则返回，如果表示的是输入结束，则会将mailboxLoopRunning设置为false，并停止运行。
 否则表示的是recordWriter不可用，则会在inputGate的recordWriter或inputProcessor恢复可用之后异步调用default action执行恢复操作。在这其中
 最重要的是inputProcessor的processInput()方法，inputProcessor有三个实现类，分别是：StreamOneInputProcessor、StreamTwoInputProcessor
 和StreamTwoInputSelectableProcessor。我们以StreamOneInputProcessor的processInput()方法为例来进行分析，它调用了input.emitNext()方法
