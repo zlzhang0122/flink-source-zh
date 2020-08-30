@@ -36,9 +36,11 @@ partitionDiscoverer.discoverPartitions()方法用于获取所有fixedTopics和�
   * LATEST：从最近的offset开始消费;
   * TIMESTAMP：从用户提供的timestamp处开始消费;
   * SPECIFIC_OFFSETS：从用户提供的offset处开始消费。
+
 consumer使用分区发现获取初始分区后，根据StartupMode来设置消费的起始offset。先来看SPECIFIC_OFFSETS的情况，在此种情况下，如果没有配置具体的
 消费位点，将会直接抛出异常。否则，获取每个分区指定的消费起始offset，如果该分区设置了消费起始的offset，则从设置的offset开始消费，否则从消费者所
 属的消费组的位点开始消费。如果采用TIMESTAMP模式，则会在没有配置消费起始timestamp时抛出异常。否则根据timestamp的值获取到对应的offset，并判断
 获取到的offset是否为空，如果不为空就从offset开始消费，否则就从最近的offset开始消费。
 
-再来看run()方法，其实现同样是在FlinkKafkaConsumerBase类中。
+再来看run()方法，其实现同样是在FlinkKafkaConsumerBase类中，其主要负责从KafkaConsumer消费数据以及向下游发送数据。具体逻辑是：首先检查在open()
+方法中已经初始化和赋值的subscribedPartitionsToStartOffsets是否为null，如果为null则抛出异常。
