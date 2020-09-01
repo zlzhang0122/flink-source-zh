@@ -3,3 +3,11 @@
 当使用MemoryStateBackend和FsStateBackend时，默认情况下会将状态数据保存到CopyOnWriteStateTable中，它是StateTable
 接口的一个实现，其中可以保存多个KeyGroup的状态，每个KeyGroup对应一个CopyOnWriteStateMap。
 
+CopyOnWriteStateMap的结构类似于HashMap，但是它相比于HashMap支持了两个特别有意思的功能：
+  * 哈希结构为了保证数据读写的效率都会有宇哥扩容策略，CopyOnWriteStateMap采用的是渐进式rehash策略，它不会一次性将所有数
+  据都迁移到新的hash表，二是会逐渐的将数据迁移过去;
+  
+  * 支持checkpoint时的异步快照，可以在快照的同时对其中的数据执行修改操作，并能同时保证快照数据的准确性;
+
+
+
