@@ -9,5 +9,7 @@ CopyOnWriteStateMap的结构类似于HashMap，但是它相比于HashMap支持�
   
   * 支持checkpoint时的异步快照，可以在快照的同时对其中的数据执行修改操作，并能同时保证快照数据的准确性;
 
-
+MemoryStateBackend和FsStateBackend的KeyedStateBackend都使用HeapKeyedStateBackend存储数据，HeapKeyedStateBackend
+持有Map<String, StateTable<K, ?, ?>> registeredKVStates来存储StateName与具体State的映射关系。registeredKVStates的
+key就是StateName，value是具体的State数据，value存储在StateTable中。
 
