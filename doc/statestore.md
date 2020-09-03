@@ -13,3 +13,7 @@ MemoryStateBackend和FsStateBackend的KeyedStateBackend都使用HeapKeyedStateBa
 持有Map<String, StateTable<K, ?, ?>> registeredKVStates来存储StateName与具体State的映射关系。registeredKVStates的
 key就是StateName，value是具体的State数据，value存储在StateTable中。
 
+StateTable有两种实现：
+  * CopyOnWriteStateTable属于Flink定制化的数据结构，在进行checkpoint时支持异步快照;
+  * NestedMapStateTable直接使用嵌套的双层HashMap存储数据，在进行checkpoint时只能进行同步快照;
+
