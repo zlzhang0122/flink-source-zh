@@ -17,3 +17,7 @@ StateTable有两种实现：
   * CopyOnWriteStateTable属于Flink定制化的数据结构，在进行checkpoint时支持异步快照;
   * NestedMapStateTable直接使用嵌套的双层HashMap存储数据，在进行checkpoint时只能进行同步快照;
 
+下面主要就CopyOnWriteStateTable类进行介绍。在StateTable中持有StateMap[] keyGroupedStateMaps真正的存储数据。StateTable
+会为每个KeyGroup的数据都初始化一个StateMap来对KeyGroup做数据隔离。在对状态进行操作时，它会先根据Key找到对应的KeyGroup，从而拿
+到相应的StateMap，这样才能对状态进行操作。
+
