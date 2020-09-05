@@ -19,5 +19,12 @@ StateTable有两种实现：
 
 下面主要就CopyOnWriteStateTable类进行介绍。在StateTable中持有StateMap[] keyGroupedStateMaps真正的存储数据。StateTable
 会为每个KeyGroup的数据都初始化一个StateMap来对KeyGroup做数据隔离。在对状态进行操作时，它会先根据Key找到对应的KeyGroup，从而拿
-到相应的StateMap，这样才能对状态进行操作。
+到相应的StateMap，这样才能对状态进行操作。而在CopyOnWriteStateTable中就使用CopyOnWriteStateMap存储数据，这是一个数组+链表构
+成的Hash表，其中的数据类型都是StateMapEntry。Hash表的第一层是一个StateMapEntry类型的数组，也就是StateMapEntry[]。在StateMapEntry
+类中有一个StateMapEntry next指针构成的链表。
+
+先来介绍下CopyOnWriteStateMap类的渐进式rehash策略，它其中有一个hash表堆外提供服务，但是如果表中的元素太多需要扩容时，就需要将数
+据迁移到一个容量更大的hash表中去。在Java的HashMap扩容时，会将旧Hash表中的所有数据一次性的都移动到大Hash表中，这样的策略存在一定的
+问题：如果当前HashMap中已经存储了1G的数据，那么就需要将1G的数据一次迁移完成，这个过程可能会比较耗时。而CopyOnWriteStateMap在扩容
+时，则不会一次将数据全部迁移，而是在每次操作它时慢慢的将数据迁移到大的Hash表中。
 
