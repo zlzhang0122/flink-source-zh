@@ -28,3 +28,6 @@ StateTable有两种实现：
 问题：如果当前HashMap中已经存储了1G的数据，那么就需要将1G的数据一次迁移完成，这个过程可能会比较耗时。而CopyOnWriteStateMap在扩容
 时，则不会一次将数据全部迁移，而是在每次操作它时慢慢的将数据迁移到大的Hash表中。
 
+具体说来，就是在内存中有两个Hash表，一个是PrimaryTable作为主桶，一个是RehashTable作为扩容期间用的桶，初始阶段只有PrimaryTable，
+当PrimaryTable中的元素个数大于设定的阈值时，就要开始扩容了。
+
