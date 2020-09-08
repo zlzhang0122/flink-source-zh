@@ -29,5 +29,10 @@ StateTable有两种实现：
 时，则不会一次将数据全部迁移，而是在每次操作它时慢慢的将数据迁移到大的Hash表中。
 
 具体说来，就是在内存中有两个Hash表，一个是PrimaryTable作为主桶，一个是RehashTable作为扩容期间用的桶，初始阶段只有PrimaryTable，
-当PrimaryTable中的元素个数大于设定的阈值时，就要开始扩容了。
+当PrimaryTable中的元素个数大于设定的阈值时，就要开始扩容了。在putEntry()方法中判断size()是否大于threshold，若是则调用doubleCapacity()
+方法申请新的Hash表赋值给RehashTable。渐进式rehash策略由于会逐渐的迁移数据，因此一定会涉及到选桶操作，它需要决定是使用PrimaryTable
+还是使用RehashTable：它首先会根据HashCode按位与PrimaryTable的大小减去1的值，从而计算出应该将当前HashCode分配到PrimaryTable的
+哪个桶中去，如果桶编号大于等于已迁移的桶编号rehashIndex(该桶编号用于标记当前rehash的迁移进度，它之前的数据已经从PrimaryTable迁移到
+了RehashTable的桶中)，则应该去PrimaryTable中去查找，否则应该去RehashTable中去查找。每次get()、put()、ContainsKey()、remove()
+操作时，都将会调用computeHashForOperationAndDoIncrementalRehash()方法触发迁移操作。
 
