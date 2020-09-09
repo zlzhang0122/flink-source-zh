@@ -50,3 +50,5 @@
 * [Flink扩展阅读4：数据去重](../master/doc/datadeduplication.md)
 
 * [Flink扩展阅读5：问题实战](../master/doc/thinking.md)
+
+* [Flink扩展阅读6：数据仓库](../master/doc/realtimedatawarehouse.md)
