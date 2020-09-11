@@ -34,5 +34,5 @@ StateTable有两种实现：
 还是使用RehashTable：它首先会根据HashCode按位与PrimaryTable的大小减去1的值，从而计算出应该将当前HashCode分配到PrimaryTable的
 哪个桶中去，如果桶编号大于等于已迁移的桶编号rehashIndex(该桶编号用于标记当前rehash的迁移进度，它之前的数据已经从PrimaryTable迁移到
 了RehashTable的桶中)，则应该去PrimaryTable中去查找，否则应该去RehashTable中去查找。每次get()、put()、ContainsKey()、remove()
-操作时，都将会调用computeHashForOperationAndDoIncrementalRehash()方法触发迁移操作。
-
+操作时，都将会调用computeHashForOperationAndDoIncrementalRehash()方法触发迁移操作，这个方法用于检测是否处于rehash过程中，如果是
+就会调用incrementalRehash()方法迁移一波数据，同时它还会计算key和namespace对应的hashCode。
