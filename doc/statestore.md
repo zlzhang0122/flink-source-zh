@@ -36,3 +36,5 @@ StateTable有两种实现：
 了RehashTable的桶中)，则应该去PrimaryTable中去查找，否则应该去RehashTable中去查找。每次get()、put()、ContainsKey()、remove()
 操作时，都将会调用computeHashForOperationAndDoIncrementalRehash()方法触发迁移操作，这个方法用于检测是否处于rehash过程中，如果是
 就会调用incrementalRehash()方法迁移一波数据，同时它还会计算key和namespace对应的hashCode。
+
+下面就重点分析一下incrementalRehash()方法的实现。
