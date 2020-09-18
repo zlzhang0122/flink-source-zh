@@ -51,4 +51,5 @@ Map的第rhIdx个桶，从前往后开始遍历，只要该桶中仍有元素，
 的数据做浅拷贝。什么是浅拷贝呢？就是只拷贝引用，而不拷贝数据。
 
 如果StateMap不是正在进行扩容，则其Snapshot的流程比较简单，就是创建一个新的snapshotData，然后直接将primaryTable中的数据拷贝到snapshotData
-中去即可。
+中去即可。如果StateMap正在进行扩容，Snapshot的流程就相对复杂一点，它需要先创建一个新的snapshotData，然后将primaryTable和rehashTable
+中的数据都拷贝到snapshotData中。
