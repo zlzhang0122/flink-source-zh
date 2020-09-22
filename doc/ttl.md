@@ -18,5 +18,6 @@ CleanupStrategies内部类用于规定过期状态的清理策略，可以在构
   * cleanupInRocksdbCompactFilter()：通过FLink定制的过滤器过滤掉过期状态数据，它有一个参数queryTimeAfterNumEntries表示在写入多少条状态
   数据后，通过状态时间戳来判断是否过期。仅对于RocksDB状态后端生效，对应于源码中的RocksdbCompactFilterCleanupStrategy策略;
   
-getOrCreateKeyedState()方法用于创建并记录状态实例，它定义在所有Keyed State状态后端的抽象基类AbstractKeyedStateBackend中。
+getOrCreateKeyedState()方法用于创建并记录状态实例，它定义在所有Keyed State状态后端的抽象基类AbstractKeyedStateBackend中，该函数的主要逻
+辑是调用TtlStateFactory.createStateAndWrapWithTtlIfEnabled()方法来创建State。
  
