@@ -19,5 +19,12 @@ CleanupStrategies内部类用于规定过期状态的清理策略，可以在构
   数据后，通过状态时间戳来判断是否过期。仅对于RocksDB状态后端生效，对应于源码中的RocksdbCompactFilterCleanupStrategy策略;
   
 getOrCreateKeyedState()方法用于创建并记录状态实例，它定义在所有Keyed State状态后端的抽象基类AbstractKeyedStateBackend中，该函数的主要逻
-辑是调用TtlStateFactory.createStateAndWrapWithTtlIfEnabled()方法来创建State。
+辑是调用TtlStateFactory.createStateAndWrapWithTtlIfEnabled()方法来创建State，TtlStateFactory就是产生TTL状态的工厂类。由此可见，如果
+我们为StateDescriptor加入了TTL，那么就会调用TtlStateFactory.createState()方法创建带有TTL的状态实例；否则，就会调用StateBackend.createInternalState()
+创建一个普通的状态实例。
+
+主要分析带有TTL的状态实例的创建方法TtlStateFactory.createState()。stateFactories是一个Map结构，维护着各种状态描述符与对应产生该类状态对象
+的工厂方法映射。
+
+
  
