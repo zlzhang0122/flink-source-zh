@@ -23,8 +23,19 @@ getOrCreateKeyedState()方法用于创建并记录状态实例，它定义在所
 我们为StateDescriptor加入了TTL，那么就会调用TtlStateFactory.createState()方法创建带有TTL的状态实例；否则，就会调用StateBackend.createInternalState()
 创建一个普通的状态实例。
 
-主要分析带有TTL的状态实例的创建方法TtlStateFactory.createState()。stateFactories是一个Map结构，维护着各种状态描述符与对应产生该类状态对象
-的工厂方法映射。
+主要分析带有TTL的状态实例的创建方法TtlStateFactory.createState()。stateFactories是一个Map结构，维护着各种状态描述符及与之对应的产生该类状
+态对象的工厂方法映射。所有的工厂方法都被包装成了SupplierWithException(这是Java 8提供的Supplier的函数式接口)，所以在上述createState()方法
+中，可以通过SupplierWithException.get()方法来实际执行create*State()工厂方法，从而获得新的带TTL的状态实例，它们其实就是普通状态类名加上Ttl
+前缀，只不过没有公开给用户使用。此外，在生成Ttl*State时，还会通过createTtlStateContext()方法生成TTL状态的上下文。
+
+TtlStateContext的本质是对下面实例的封装：
+  * 原始State：通过StateBackend.createInternalState()方法创建得到;
+  * StateTtlConfig：状态TTL的配置;
+  * TtlTimeProvider：用于提供判断状态过期标准的时间戳，目前的实现比较简单，就是代理了System.currentTimeMillis();
+  * State的序列化器：通过StateDescriptor.getSerializer()方法取得;
+  * Runnable类型的回调方法：通过registerTtlIncrementalCleanupCallback()方法产生，用于状态数据的增量清理;
+  
+
 
 
  
