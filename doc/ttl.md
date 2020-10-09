@@ -34,8 +34,12 @@ TtlStateContext的本质是对下面实例的封装：
   * TtlTimeProvider：用于提供判断状态过期标准的时间戳，目前的实现比较简单，就是代理了System.currentTimeMillis();
   * State的序列化器：通过StateDescriptor.getSerializer()方法取得;
   * Runnable类型的回调方法：通过registerTtlIncrementalCleanupCallback()方法产生，用于状态数据的增量清理;
-  
 
-
+State的相关类图如下所示：
+![Ttl类图](../images/ttl.png "Ttl类图")
+从图中可以看到，所有的Ttl*State都是AbstractTtlState的子类，而AbstractTtlState又是装饰器AbstractTtlDecorator的子类，AbstractTtlDecorator
+类是基本的TTL逻辑的封装，其成员属性除了前面在TtlStateContext已经提到过的外，还有表示在读取状态值时也更新时间戳的updateTsOnRead，以及表示即使
+状态过期在状态真正删除前也返回状态值的returnExpired。而状态值与TTL的包装(封装成TtlValue，它有两个属性，userValue表示状态值，lastAccessTimestamp
+表示最近访问的时间戳)和过期检测实际上都是由工具类TtlUtils负责处理的，实现上也比较简单。
 
  
