@@ -42,4 +42,10 @@ State的相关类图如下所示：
 状态过期在状态真正删除前也返回状态值的returnExpired。而状态值与TTL的包装(封装成TtlValue，它有两个属性，userValue表示状态值，lastAccessTimestamp
 表示最近访问的时间戳)和过期检测实际上都是由工具类TtlUtils负责处理的，实现上也比较简单。
 
+AbstractTtlDecorator类的核心方法是获取状态值的getWrappedWithTtlCheckAndUpdate()，它接受三个参数：
+  * getter：可以抛出异常的Supplier，用于获取状态的值;
+  * updater：可抛出异常的Consumer，用于更新状态的时间戳;
+  * stateClear：可抛出异常的Runnable，用于异步删除过期状态;
+  
+
  
