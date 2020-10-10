@@ -1,6 +1,6 @@
 ### 状态生成时间(State TTL)
 
-为了避免状态数据无限增长引发的OOM问题，必须有一个机制能够给状态进行瘦身，从而清除掉无效状态给系统带来的影响，Flink 从1.6开始引入了TTL(状态的生存
+为了避免状态数据无限增长引发的OOM问题，必须有一个机制能够给状态进行瘦身，从而清除掉无效状态给系统带来的影响，Flink从1.6开始引入了TTL(状态的生存
 时间)机制，它支持KeyedState的自动过期，并自动清除掉过期的State。
 
 从StateTtlConfig类来分析TTL机制的底层实现，该类中有5个成员属性，它们也是用户需要指定的参数配置。包括：
@@ -46,6 +46,14 @@ AbstractTtlDecorator类的核心方法是获取状态值的getWrappedWithTtlChec
   * getter：可以抛出异常的Supplier，用于获取状态的值;
   * updater：可抛出异常的Consumer，用于更新状态的时间戳;
   * stateClear：可抛出异常的Runnable，用于异步删除过期状态;
-  
 
+这说明，在默认情况下，后台清理过期状态的策略是惰性的，即只有当状态值被读取时，才会对状态做过期检测，并异步清除过期的状态。这种机制带来的问题是对于那
+些实际上已经过期但没有再次被访问的状态来说将无法被清除，从而导致状态大小无限增长，这点应该引起注意。
+
+以TtlMapState为例来分析下TTL状态的实现，从其源码中可以看出，TtlMapState的增删改查操作都是在原MapState上进行，只是通过装饰器模式增加了TTL的相
+关逻辑，非常简单。但是有一点需要注意，所有的增删改查操作之前都需要执行accessCallback.run()方法。该方法会在启用增量清理策略时通过在状态数据上维护
+一个全局迭代器向前清理过期数据，如果没有启用增量清理策略，则accessCallback为空。
+
+最后分析到RocksDB压缩过滤清理策略，Flink会通过维护一个RocksDbTtlCompactFiltersManager的实例来管理FlinkCompactionFilter过滤器，这个过滤
+器并不是在Flink工程中维护的，而是位于Data-Artisans中为Flink专门维护的FRocksDB库内，主要是C++代码，通过JNI调用。
  
