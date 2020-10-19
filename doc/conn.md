@@ -75,7 +75,7 @@ buffer没有被释放，则跳过本次循环重新开始新的循环，否则�
 直接通过tcpChannel将PartitionRequest请求发送出去，并添加回调函数。否则如果需要延迟发送，则调用eventLoop的schedule()方法进行延迟发送。那么是谁
 调用了NettyPartitionRequestClient类的requestSubpartition()方法呢？继续向上追踪就来到了RemoteInputChannel的requestSubPartition()方法，
 它的逻辑是如果partitionRequestClient为空，则会预先通过connectionManager创建一个client，然后调用其requestSubpartition()方法发送partitionRequest。
-SingleInputGate类的requestPartition()方法调用了上述方法，它首先会判断该partition是否已经被请求过，由于只能请求一次，所以它会先循环所有的inputChannels，
+SingleInputGate类的requestPartitions()方法调用了上述方法，它首先会判断该partition是否已经被请求过，由于只能请求一次，所以它会先循环所有的inputChannels，
 并请求对应的subPartition，并在第一次调用该方法后就会将requestedPartitionsFlag设置为true，以防重复调用。SingleInputGate继承于InputGate，
 而InputGate的作用就是从intermediate result中读取数据到task中，operatorChain之间会使用intermediate result来作为中间结果的缓存，它在执行
 时会使用ResultPartition来存放数据，其会根据数据分区条件分为一个或多个ResultSubpartition，每一个ResultSubpartition都对应下游的一个InputGate，
