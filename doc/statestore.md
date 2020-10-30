@@ -53,3 +53,6 @@ Map的第rhIdx个桶，从前往后开始遍历，只要该桶中仍有元素，
 如果StateMap不是正在进行扩容，则其Snapshot的流程比较简单，就是创建一个新的snapshotData，然后直接将primaryTable中的数据拷贝到snapshotData
 中去即可。如果StateMap正在进行扩容，Snapshot的流程就相对复杂一点，它需要先创建一个新的snapshotData，然后将primaryTable和rehashTable
 中的数据都拷贝到snapshotData中。
+
+那么如果StateMap当前正在进行扩容，则其Snapshot的流程就会相对来说复杂一些。需要先创建一个新的snapshotData，将primaryTable和rehashTable
+的数据都拷贝到snapshotData中。
