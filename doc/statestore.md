@@ -55,4 +55,5 @@ Map的第rhIdx个桶，从前往后开始遍历，只要该桶中仍有元素，
 中的数据都拷贝到snapshotData中。
 
 那么如果StateMap当前正在进行扩容，则其Snapshot的流程就会相对来说复杂一些。需要先创建一个新的snapshotData，将primaryTable和rehashTable
-的数据都拷贝到snapshotData中。
+的数据都拷贝到snapshotData中，snapshotData数组的长度并不等于primaryTable的长度+rehashTable的长度，而是分别计算primaryTable和rehashTable
+中有几个桶中有数据，然后其桶数量为有数据的桶数量之和。
