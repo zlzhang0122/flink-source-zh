@@ -58,4 +58,5 @@ Map的第rhIdx个桶，从前往后开始遍历，只要该桶中仍有元素，
 的数据都拷贝到snapshotData中，snapshotData数组的长度并不等于primaryTable的长度+rehashTable的长度，而是分别计算primaryTable和rehashTable
 中有几个桶中有数据，然后其桶数量为有数据的桶数量之和。
 
-浅拷贝的具体流程如下：首先调用CopyOnWriteStateTable类的stateSnapshot()方法对整个StateTable进行快照。
+浅拷贝的具体流程如下：首先调用CopyOnWriteStateTable类的stateSnapshot()方法对整个StateTable进行快照，stateSnapshot()方法会创建CopyOnWriteStateTableSnapshot
+类的对象，而在该类的构造函数中会调用CopyOnWriteStateTable的getStateMapSnapshotList()方法。
