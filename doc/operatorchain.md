@@ -1,8 +1,10 @@
 ### Operator Chain
 
-Operator Chain是指将满足一定条件的Operator链在一起，放在同一个Task(也就是线程)中执行，它是Flink任务优化的一种方式。由于Task是一个线程，所以在同一个
-Task里面的Operator的数据传输就从网络传输变成了函数调用，大大的减少了数据传输的过程。常见的chain，如source->map->filter->sink，这样的任务可以链在一
-起，那么既然是要满足一定的条件才能chain在一起，那么究竟要满足什么样的条件呢，以及chain在一起后如何执行呢？
+Operator Chain是指将满足一定条件的Operator链在一起，放在同一个Task(也就是线程)中执行，它是Flink任务优化的一种方式。由于所有chain在一起的sub-task
+都会在同一个线程(也就是TM的slot)中运行，所以在同一个Task里面的Operator的数据传输就从网络传输变成了函数调用，这大大的减少了数据传输的过程，减少了
+不必要的数据交换、序列化反序列化的开销以及线程的上下文切换，提升了作业的执行效率。常见的chain，如source->map->filter->sink，这样的任务可以链在一
+起，其是在优化逻辑执行计划的阶段加入的，也就是发生在由StreamGraph生成JobGraph的过程中。那么既然是要满足一定的条件才能chain在一起，那么究竟要满足
+什么样的条件呢，以及chain在一起后如何执行呢？
 
 前面在分析任务提交时其实已经分析过chain在一起需要满足的条件了，为了加深印象，我们再来分析一下。
 我们知道，在Flink中有四种图，分别是StreamGraph、JobGraph、ExecutionGraph和物理执行图。其中，前两种是在客户端生成，而ExecutionGraph是在JobMaster中
