@@ -52,3 +52,5 @@
 * [Flink扩展阅读5：问题实战](../master/doc/thinking.md)
 
 * [Flink扩展阅读6：数据仓库](../master/doc/realtimedatawarehouse.md)
+
+* [Flink扩展阅读7：Java SPI](../master/doc/spi.md)
