@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3698c706-6cbf-4c64-963f-9b5199f831dd" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/images/apiandspi.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doc/spi.md" beforeDir="false" afterPath="$PROJECT_DIR$/doc/spi.md" afterDir="false" />
     </list>
@@ -44,14 +43,14 @@
     <property name="settings.editor.splitter.proportion" value="0.2" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/images" />
+      <recent name="$PROJECT_DIR$/docs/image" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/images" />
       <recent name="$PROJECT_DIR$/doc" />
       <recent name="$PROJECT_DIR$/docs" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/images" />
-      <recent name="$PROJECT_DIR$/docs/image" />
     </key>
   </component>
   <component name="RunManager">
@@ -377,7 +376,7 @@
       <workItem from="1602581458639" duration="595000" />
       <workItem from="1603099931610" duration="4465000" />
       <workItem from="1604909711482" duration="945000" />
-      <workItem from="1605178562286" duration="6569000" />
+      <workItem from="1605178562286" duration="9364000" />
     </task>
     <servers />
   </component>
