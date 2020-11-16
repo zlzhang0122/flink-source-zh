@@ -1,7 +1,7 @@
 ### Java SPI
 
 API是站在应用的角度定义了功能如何实现，SPI是系统为第三方专门开发的扩展规范以及动态加载扩展点的机制。下图反映了API和SPI之间的不同：
-![API和SPI](../images/apiandspi.png "API和SPI")
+![API和SPI](../images/apiandspi.jpg "API和SPI")
 
 当作为服务提供方利用SPI机制时，需要遵循SPI的约定：
   * 先编写好服务接口的实现类，即服务提供类;
