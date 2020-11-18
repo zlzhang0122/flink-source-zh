@@ -12,4 +12,5 @@ LazyIterator是一个懒加载服务提供类的迭代器(ServiceLoader本身也
 ServiceLoader#iterator()方法获取加载到的服务提供类的结果，它返回一个标准的迭代器，先从缓存的providers容器中获取，如果获取不到再通过lookupIterator
 进行懒加载。
 
-内部类LazyIterator的hasNextService()方法负责在上述SPI定义文件中逐个寻找对应的服务提供类并加载资源。
+内部类LazyIterator的hasNextService()方法负责在上述SPI定义文件中逐个寻找对应的服务提供类并加载资源，而nextService()方法则通过反射创建服务提
+供类的实例并缓存下来，直到完成整个发现与注入的流程，所以是懒加载的。由此也可得知，SPI机制内部一定会遍历所有的扩展点并将它们全部加载(这也是其主要缺点)。
