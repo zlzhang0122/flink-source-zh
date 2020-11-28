@@ -19,4 +19,11 @@ ServiceLoader#iterator()方法获取加载到的服务提供类的结果，它�
 
 JDBC为用户通过Java访问数据库提供了统一的接口，而数据库的类型多种多样，并且其类型还会不断的增加，因此借助于SPI机制可以灵活的实现数据库驱动的插件化。
 在使用旧版JDBC时，必须首先通过调用类似Class.forName("com.mysql.jdbc.Driver")方法，通过反射的方式来手动加载数据库驱动。新版的JDBC只需直接调
-用DriverManager.getConnection()方法即可获得数据库连接。
+用DriverManager.getConnection()方法即可获得数据库连接。如果加载了多个JDBC驱动类，则获取数据库连接时会遍历所有已经注册的驱动实例，逐个调用其
+connect()方法尝试是否能够成功建立连接，并返回第一个成功的连接。
+
+SPI机制在Flink的Table模块中也有广泛的应用，因为Flink Table的类型也有很多种，TableFactory就是Flink提供的SPI工厂接口。通过分析TableFactoryService#findSingleInternal()
+方法，可以看到discoverFactories()方法用来发现并加载Table的服务提供类，filter()方法则用来过滤出满足当前应用需要的服务提供类。
+
+以上就是SPI及其在JDBC和Flink中的一些应用了，今天锻炼了半个小时，实在是太困了。
+                                                    
