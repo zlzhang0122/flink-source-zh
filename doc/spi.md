@@ -18,4 +18,5 @@ ServiceLoader#iterator()方法获取加载到的服务提供类的结果，它�
 下面以JDBC和Flink为例来分析SPI的实际应用。
 
 JDBC为用户通过Java访问数据库提供了统一的接口，而数据库的类型多种多样，并且其类型还会不断的增加，因此借助于SPI机制可以灵活的实现数据库驱动的插件化。
-在使用旧版JDBC时，必须首先通过调用类似Class.forName("com.mysql.jdbc.Driver")方法，通过手动的方式来加载数据库驱动。
+在使用旧版JDBC时，必须首先通过调用类似Class.forName("com.mysql.jdbc.Driver")方法，通过反射的方式来手动加载数据库驱动。新版的JDBC只需直接调
+用DriverManager.getConnection()方法即可获得数据库连接。
