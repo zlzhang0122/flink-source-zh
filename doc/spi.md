@@ -23,7 +23,7 @@ JDBC为用户通过Java访问数据库提供了统一的接口，而数据库的
 connect()方法尝试是否能够成功建立连接，并返回第一个成功的连接。
 
 SPI机制在Flink的Table模块中也有广泛的应用，因为Flink Table的类型也有很多种，TableFactory就是Flink提供的SPI工厂接口。通过分析TableFactoryService#findSingleInternal()
-方法，可以看到discoverFactories()方法用来发现并加载Table的服务提供类，filter()方法则用来过滤出满足当前应用需要的服务提供类。
+方法，可以看到discoverFactories()方法用来发现并加载Table的服务提供类，filter()方法则用于过滤出满足当前应用需要的服务提供类。
 
 以上就是SPI及其在JDBC和Flink中的一些应用了，今天锻炼了半个小时，实在是太困了。
                                                     
