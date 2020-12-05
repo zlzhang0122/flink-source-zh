@@ -1,5 +1,9 @@
 ### State存储
 
+Flink支持有状态的计算，其支持的状态又分为两种：Operator State和Keyed Sate，前者没有当前key的概念，而后者总有一个current key
+与之对应。此外，前者只能存放在堆中，而后者既可以存放在堆中，也可以存放在堆外。Flink的Keyed Sate是由Key Group来组织的，并分布在
+Flink算子的哥哥并发实例上，每个算子上的Key Group个数即为最大并发数。
+
 当使用MemoryStateBackend和FsStateBackend时，默认情况下会将状态数据保存到CopyOnWriteStateTable中，它是StateTable
 接口的一个实现，其中可以保存多个KeyGroup的状态，每个KeyGroup对应一个CopyOnWriteStateMap。
 
