@@ -14,7 +14,7 @@
 
 * [Flink源码阅读7：分布式快照](../master/doc/chandylamport.md)
 
-* [Flink源码阅读8：窗口触发器](../master/doc/trigger.md)
+* [Flink源码阅读8：窗口触发器](../master/doc/triggerandevictor.md)
 
 * [Flink源码阅读9：流分区器](../master/doc/partitioner.md)
 
