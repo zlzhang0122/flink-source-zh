@@ -26,8 +26,11 @@ partitionDiscoverer.discoverPartitions()方法用于获取所有fixedTopics和�
 接下来的逻辑分为两个部分，如果consumer是从快照恢复的，则走快照恢复逻辑，否则走直接启动逻辑。
 先分析从快照恢复的逻辑，既然是从快照恢复的，那么restoredState肯定不为空，否则就会为空。如果restoredState中没有某个分区的状态，那么将直接从最早
 的位点开始消费(这个逻辑是写死的，一定要注意)。
-然后对subscribedPartitionsToStartOffsets赋值，它会过滤掉不归该task负责的kafka分区后，将剩余的分区和位点信息放入已订阅的分区列表。然后，判断
-是否需要依照分区发现配置的topic正则表达式过滤分区，如果是的话就会过滤掉topic名称不符合topicPattern的分区。
+然后对subscribedPartitionsToStartOffsets赋值，它会过滤掉不归该task负责的kafka分区后，将剩余的分区和位点信息放入已订阅的分区列表。此处，注意
+计算的方式：先根据分区所属的topic计算hash值，再乘以31，然后按位与0x7FFFFFFF以保证得到的结果是一个正整数(这也是得到正整数最安全的方法，原因可以参看
+[Flink扩展阅读5：问题实战](./thinking.md)，里面又详细的介绍和分析)，再将结果用算子的并行度取模，再将得到的结果加上分区所属的分区编号后再次用算子
+的并行度取模，得到的值就是将要消费该kafka分区的subtask的编号。然后，判断是否需要依照分区发现配置的topic正则表达式过滤分区，如果是的话就会过滤掉
+topic名称不符合topicPattern的分区。
 
 如果consumer不是从快照恢复的，那么restoredState就会为空，consumer就会直接启动，会根据startupMode启动模式走不同的启动逻辑。它也是一个枚举类
 型，有五个枚举值：

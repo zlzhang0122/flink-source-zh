@@ -38,6 +38,8 @@
 
 * [Flink源码阅读19：State存储](../master/doc/statestore.md)
 
+* [Flink源码阅读20：Flink SQL](../master/doc/sql.md)
+
 
 ### 扩展阅读
 

@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3698c706-6cbf-4c64-963f-9b5199f831dd" name="Default" comment="" />
+    <list default="true" id="3698c706-6cbf-4c64-963f-9b5199f831dd" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/flinkkafkaconsumer.md" beforeDir="false" afterPath="$PROJECT_DIR$/doc/flinkkafkaconsumer.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -376,7 +380,8 @@
       <workItem from="1605178562286" duration="17695000" />
       <workItem from="1606573011484" duration="5150000" />
       <workItem from="1606977153370" duration="612000" />
-      <workItem from="1607141506296" duration="7668000" />
+      <workItem from="1607141506296" duration="8326000" />
+      <workItem from="1607246187509" duration="550000" />
     </task>
     <servers />
   </component>
@@ -392,14 +397,10 @@
     </option>
   </component>
   <component name="WindowStateProjectService">
-    <state x="142" y="85" key="DiffContextDialog" timestamp="1594001988022">
+    <state x="382" y="202" width="598" height="490" key="find.popup" timestamp="1607181762744">
       <screen x="0" y="23" width="1280" height="709" />
     </state>
-    <state x="142" y="85" key="DiffContextDialog/0.23.1280.709@0.23.1280.709" timestamp="1594001988022" />
-    <state x="405" y="89" key="RollbackChangesDialog" timestamp="1594001989353">
-      <screen x="0" y="23" width="1280" height="709" />
-    </state>
-    <state x="405" y="89" key="RollbackChangesDialog/0.23.1280.709@0.23.1280.709" timestamp="1594001989353" />
+    <state x="382" y="202" width="598" height="490" key="find.popup/0.23.1280.709@0.23.1280.709" timestamp="1607181762744" />
     <state x="305" y="56" width="670" height="676" key="search.everywhere.popup" timestamp="1599134365019">
       <screen x="0" y="23" width="1280" height="709" />
     </state>
