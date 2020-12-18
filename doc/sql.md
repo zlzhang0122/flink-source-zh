@@ -4,4 +4,5 @@ Flink SQL是Flink内部最高级的API，使用者可以通过SQL语句执行流
 那么一条Flink SQL语句究竟是如何转化为可执行的任务的呢？就让我们来深入的看一看吧。
 
 当然，在此之前有些前置知识需要先介绍一下，这就是Apache Calcite和Blink Planner。
+Flink使用了通用的SQL解析与优化引擎Apache Calcite，Calcite在Flink中主要承担以下任务：
 
