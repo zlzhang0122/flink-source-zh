@@ -11,3 +11,5 @@ Flink使用了通用的SQL解析与优化引擎Apache Calcite，Calcite在Flink�
   * 逻辑计划优化：按照预定义的优化规则RelOptRule优化逻辑计划。Calcite中的优化器RelOptPlanner有两种，一是基于规则优化(RBO)的HepPlanner，
   二是基于代价优化(CBO)的VolcanoPlanner;
   * 物理计划：将优化的逻辑计划翻译成对应执行逻辑的物理计划;
+
+在物理计划之后，还需要通过代码生成(code generation)将SQL转化为能够直接执行的DataStream/DataSet API程序。
