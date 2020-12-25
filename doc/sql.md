@@ -12,4 +12,9 @@ Flink使用了通用的SQL解析与优化引擎Apache Calcite，Calcite在Flink�
   二是基于代价优化(CBO)的VolcanoPlanner;
   * 物理计划：将优化的逻辑计划翻译成对应执行逻辑的物理计划;
 
-在物理计划之后，还需要通过代码生成(code generation)将SQL转化为能够直接执行的DataStream/DataSet API程序。
+在物理计划之后，还需要通过代码生成(code generation)将SQL转化为能够直接执行的DataStream/DataSet API程序。Flink Table/SQL体系中的Planner
+(即查询处理器)是沟通Flink与Calcite的桥梁，为Table/SQL API提供完整的解析、优化和执行环境。它根据流处理作业和批处理作业的不同，分别提供了StreamPlanner
+和BatchPlanner两种实现，这两种Planner的底层共享了基类PlannerBase的很多源码，并最终负责将作业翻译成基于DataStream Transformation API的
+执行逻辑(即将批处理视为流处理的特殊情况)。
+                                                  
+                                                                         
