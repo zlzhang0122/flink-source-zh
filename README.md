@@ -40,6 +40,8 @@
 
 * [Flink源码阅读20：Flink SQL](../master/doc/sql.md)
 
+* [Flink源码阅读21：调度器](../master/doc/scheduler.md)
+
 
 ### 扩展阅读
 
