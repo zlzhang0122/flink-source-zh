@@ -16,5 +16,7 @@ Flink使用了通用的SQL解析与优化引擎Apache Calcite，Calcite在Flink�
 (即查询处理器)是沟通Flink与Calcite的桥梁，为Table/SQL API提供完整的解析、优化和执行环境。它根据流处理作业和批处理作业的不同，分别提供了StreamPlanner
 和BatchPlanner两种实现，这两种Planner的底层共享了基类PlannerBase的很多源码，并最终负责将作业翻译成基于DataStream Transformation API的
 执行逻辑(即将批处理视为流处理的特殊情况)。
+
+在Flink中通过TableEnvironment.explainSql()方法可以直接以文本形式获取到SQL语句的查询计划，包括：抽象语法树、优化的逻辑计划和物理执行计划三部分。
                                                   
                                                                          

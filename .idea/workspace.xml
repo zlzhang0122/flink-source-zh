@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3698c706-6cbf-4c64-963f-9b5199f831dd" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/doc/zeppelin.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/scheduler.md" beforeDir="false" afterPath="$PROJECT_DIR$/doc/scheduler.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -384,7 +384,7 @@
       <workItem from="1607352691962" duration="545000" />
       <workItem from="1608298957442" duration="562000" />
       <workItem from="1608798553023" duration="2123000" />
-      <workItem from="1608889274474" duration="2653000" />
+      <workItem from="1608889274474" duration="4522000" />
     </task>
     <servers />
   </component>
