@@ -38,3 +38,11 @@ DynamicEventTimeSessionWindows也扩展了MergingWindowAssigner类，但它的�
 sessionTimeout的取值。ProcessingTime的各种窗口分配类的处理方式与针对event time的处理方式类似，只是在assignWindows()方法中会调用WindowAssignerContext
 类的getCurrentProcessingTime()获取当前的处理时间，其余的处理逻辑基本类似。
 
+对于窗口，其实还有一个关于窗口的开始和结束时间的问题。在最新版本的FLink 1.12中，对于滚动窗口，无论是基于事件时间还是处理时间，都新增加了一个WindowStagger
+的枚举型配置，它能够对滚动窗口的起始时间进行设置，默认情况下的取值是WindowStagger.ALIGNED，也就是各个分区的所有窗格中的数据会同时被触发，很难以
+理解，那就举个例子来说：如果设置了一个十分钟的滚动窗口，且偏移为0，那么窗口的时间范围都将是[0, 10)、[10, 20)...也就是说，即使现在是12:04，但是
+时间依然会进入[12:00, 12:10)的这个窗口，而不是[12:04, 12:14)的这个窗口。从Flink 1.12开始，新增了WindowStagger.RANDOM和WindowStagger.NATURAL
+这两个类型。前者表示它会在第一个事件到来时随机产生一个偏移并由此设置窗口的范围，在上面的例子中就是表示，第一个窗口的起始时间可能是12:00至12:09这之间
+的10个时间中的任意一个。后者表示它会按照第一个事件到达算子的时间作为窗口的起始时间偏移设置窗口，对于上面的例子，窗口将会是[12:04,12:14)、[12:14,12:24)...
+通过增加WindowStagger.RANDOM和WindowStagger.NATURAL这两种新模式，也使得窗口的应用范围更加广泛和灵活。
+
