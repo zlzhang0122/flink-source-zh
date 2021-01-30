@@ -23,3 +23,6 @@ Planner(查询处理器)是Flink Table/SQL体系中沟通Flink与Calcite的桥�
 处理视为了流处理的特殊情况)。
 
 在Flink中通过TableEnvironment.explainSql()方法可以直接以文本形式获取到SQL语句的查询计划，包括：抽象语法树、优化的逻辑计划和物理执行计划三部分。
+首先，SQL执行的入口方法是TableEnvironmentImpl.sqlQuery()方法，在这个方法中会调用Parser.parse()方法来对SQL进行解析，它会最终调用到CalciteParser.parse()
+方法，也就是说它直接调用了Calcite的SQL解析器SqlParser进行解析，解析返回的结果是SqlNode类型。由于Flink的SQL方言与标准SQL相比还是有一定的差距，
+所以在构造SqlParser的配置类SqlParser.Config时，传入了解析器工厂SqlParserImplFactory，从而实现Flink SQL专用的解析器。
