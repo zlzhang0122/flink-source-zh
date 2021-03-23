@@ -15,3 +15,8 @@ kill。如果我们在存放每个状态时就能给其设置一个过期时间�
 
 FLink SQL中通过StreamQueryConfig的withIdleStateRetentionTime()方法，来为其设置最长和最短的清理时间，这样就可以
 保证状态最终都被被清除，最长和最短清理时间的差距最少为5分钟，这样能够避免大量状态数据在同一瞬间过期，从而对系统造成压力。
+
+在程序中可以通过StreamQueryConfig来设置状态的过期时间，但默认情况下其设置并不是全局的，因此在设置了清理周期后，需要在
+StreamTableEnvironment类调用toAppendStream()或toRetractStream()将Table转为DataStream时，显式传入QueryConfig
+对象作为参数，该功能才会生效。
+
