@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3698c706-6cbf-4c64-963f-9b5199f831dd" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/doc/loadclass.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/idlestate.md" beforeDir="false" afterPath="$PROJECT_DIR$/doc/idlestate.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -392,7 +393,8 @@
       <workItem from="1611281524170" duration="2951000" />
       <workItem from="1612017716213" duration="2075000" />
       <workItem from="1615686432585" duration="4524000" />
-      <workItem from="1616417220682" duration="1139000" />
+      <workItem from="1616417220682" duration="1717000" />
+      <workItem from="1617190490913" duration="2390000" />
     </task>
     <servers />
   </component>
@@ -408,14 +410,10 @@
     </option>
   </component>
   <component name="WindowStateProjectService">
-    <state x="382" y="202" width="598" height="490" key="find.popup" timestamp="1607181762744">
+    <state x="402" y="105" key="RollbackChangesDialog" timestamp="1616741453218">
       <screen x="0" y="23" width="1280" height="709" />
     </state>
-    <state x="382" y="202" width="598" height="490" key="find.popup/0.23.1280.709@0.23.1280.709" timestamp="1607181762744" />
-    <state x="305" y="56" width="670" height="676" key="search.everywhere.popup" timestamp="1599134365019">
-      <screen x="0" y="23" width="1280" height="709" />
-    </state>
-    <state x="305" y="56" width="670" height="676" key="search.everywhere.popup/0.23.1280.709@0.23.1280.709" timestamp="1599134365019" />
+    <state x="402" y="105" key="RollbackChangesDialog/0.23.1280.709@0.23.1280.709" timestamp="1616741453218" />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />

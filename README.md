@@ -42,6 +42,7 @@
 
 * [Flink源码阅读21：调度器](../master/doc/scheduler.md)
 
+* [Flink源码阅读22：类加载](../master/doc/loadclass.md)
 
 ### 扩展阅读
 
