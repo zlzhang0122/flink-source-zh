@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3698c706-6cbf-4c64-963f-9b5199f831dd" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/doc/loadclass.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/flinkonzeppelin.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -394,7 +393,8 @@
       <workItem from="1612017716213" duration="2075000" />
       <workItem from="1615686432585" duration="4524000" />
       <workItem from="1616417220682" duration="1717000" />
-      <workItem from="1617190490913" duration="2390000" />
+      <workItem from="1617190490913" duration="2425000" />
+      <workItem from="1618935397602" duration="290000" />
     </task>
     <servers />
   </component>
