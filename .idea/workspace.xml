@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3698c706-6cbf-4c64-963f-9b5199f831dd" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/doc/flinkonzeppelin.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="3698c706-6cbf-4c64-963f-9b5199f831dd" name="Default" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -394,7 +391,7 @@
       <workItem from="1615686432585" duration="4524000" />
       <workItem from="1616417220682" duration="1717000" />
       <workItem from="1617190490913" duration="2425000" />
-      <workItem from="1618935397602" duration="290000" />
+      <workItem from="1618935397602" duration="503000" />
     </task>
     <servers />
   </component>
