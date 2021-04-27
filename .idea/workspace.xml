@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3698c706-6cbf-4c64-963f-9b5199f831dd" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/doc/kafkasource.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/loadclass.md" beforeDir="false" afterPath="$PROJECT_DIR$/doc/loadclass.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -396,7 +396,8 @@
       <workItem from="1617190490913" duration="2425000" />
       <workItem from="1618935397602" duration="503000" />
       <workItem from="1619168802041" duration="1000000" />
-      <workItem from="1619271229181" duration="1072000" />
+      <workItem from="1619271229181" duration="1278000" />
+      <workItem from="1619567450914" duration="316000" />
     </task>
     <servers />
   </component>
